@@ -16,7 +16,6 @@ def updateUnpubReviews(ID,lastServerReviewsDate):
     return newReviews
 
 
-
 def __getListOfNewReviewsFromSerwer(lastServerReviewsDate):
 
     newReviews = []
