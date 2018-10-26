@@ -27,3 +27,28 @@ def __sortByDate(news):
 
 def __saveReviews(newReviews):
     return
+
+
+def updateReviewsApp(lastAppReviewsDate, appSource):
+    """Function gets last App review date
+        and send relevant review to the client """
+
+    relevantReview = __loadReview(lastAppReviewsDate, appSource) #uploading relevant news from server DB
+
+    for review in relevantReview:
+        if(review.date >= lastAppReviewsDate):
+            relevantReview.remove(review)
+
+    sendReviewToApp(relevantReview)
+
+
+def __loadReview(lastAppNewsDate, appSource):
+    """Retrieves 15 last reviews from DB with app's source
+    """
+    reviews = []
+    return reviews
+
+
+def __sendReviewToApp(relevantReview):
+    """Send relevant reviews to app's"""
+    return

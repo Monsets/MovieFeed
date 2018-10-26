@@ -31,3 +31,28 @@ def __saveNews(newNews):
     return
 
 print(__getListOfNewNewsFromSource(__NEWS_SOURCES[0], 0)['entries'])
+
+
+def updateNewsApp(lastAppNewsDate, appSource):
+    """Function gets last App news date
+        and send relevant news to the client """
+
+    relevantNews = __loadNews(lastAppNewsDate, appSource) #uploading relevant news from server DB
+
+    for news in relevantNews:
+        if(news.date >= lastAppNewsDate):
+            relevantNews.remove(news)
+
+    sendNewsToApp(relevantNews)
+
+
+def __loadNews(lastAppNewsDate, appSource):
+    """Retrieves from DB 15 last news from with app's source
+    """
+    news = []
+    return news
+
+
+def __sendNewsToApp(relevantNews):
+    """Send relevant news to app's"""
+    return
