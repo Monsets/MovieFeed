@@ -1,5 +1,8 @@
-from classes.news import News
 import feedparser
+import requests
+import re
+
+from classes.news import News
 
 __NEWS_SOURCES = ['https://st.kp.yandex.net/rss/news_feed.rss']
 
@@ -18,19 +21,33 @@ def updateNewsCollection(lastServerNewsDate):
 
     __saveNews(newNews)
 
-
-
 def __getListOfNewNewsFromSource(source, lastServerNewsDate):
 
-    return feedparser.parse(source)
+    feed = feedparser.parse(source)['entries']
+    news = []
+
+    for item in feed:
+        title = item['title']
+        date = item['published_parsed']
+        text = item['summary']
+        link = item['link']
+        picture = __getImageFromSite(link)
+        news.append(News(picture, date, link, title, text))
+
+    return news
+
+def __getImageFromSite(site):
+    """This function gets image for news from site"""
+    response = requests.get(site)
+    imgLink = re.search(r'https://avatars.mds.yandex.net/get-kinopoisk-post-img/[\w/-]+', response.text)
+
+    return imgLink.group(0)
 
 def __sortByDate(news):
     return news.date
 
 def __saveNews(newNews):
     return
-
-print(__getListOfNewNewsFromSource(__NEWS_SOURCES[0], 0)['entries'])
 
 
 def updateNewsApp(lastAppNewsDate, appSource):
@@ -43,7 +60,7 @@ def updateNewsApp(lastAppNewsDate, appSource):
         if(news.date >= lastAppNewsDate):
             relevantNews.remove(news)
 
-    sendNewsToApp(relevantNews)
+    __sendNewsToApp(relevantNews)
 
 
 def __loadNews(lastAppNewsDate, appSource):

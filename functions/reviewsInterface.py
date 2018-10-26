@@ -39,7 +39,7 @@ def updateReviewsApp(lastAppReviewsDate, appSource):
         if(review.date >= lastAppReviewsDate):
             relevantReview.remove(review)
 
-    sendReviewToApp(relevantReview)
+    __sendReviewToApp(relevantReview)
 
 
 def __loadReview(lastAppNewsDate, appSource):
