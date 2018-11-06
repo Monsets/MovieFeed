@@ -4,5 +4,3 @@ class User():
         self.encLogin = encLogin
         self.encPass = encPass
         self.status = status
-        self.lastdate = lastdate
-        self.MAC = MAC
