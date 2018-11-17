@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/ToolbarColor">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <ImageButton
+                    android:id="@+id/Button_News"
+                    android:layout_width="65dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    app:elevation="15dp"
+                    android:padding="10dip"
+                    android:src="@drawable/ic_news_grey"
+                    android:background="@drawable/top_border"
+            />
+
+            <ImageButton
+                    android:id="@+id/Button_Reviews"
+                    android:layout_width="65dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_reviews_grey"
+                    android:background="@drawable/top_border"
+            />
+
+            <ImageButton
+                    android:id="@+id/Button_Search"
+                    android:layout_width="65dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:src="@drawable/ic_search_grey"
+                    android:background="@drawable/top_border"
+            />
+
+            <ImageButton
+                    android:id="@+id/Button_Profile"
+                    android:layout_width="65dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:src="@drawable/ic_profile_grey"
+                    android:background="@drawable/top_border"
+            />
+
+            <ImageButton
+                    android:id="@+id/Button_Settings"
+                    android:layout_width="65dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:src="@drawable/ic_settings_grey"
+                    android:background="@drawable/top_border"
+            />
+        </LinearLayout>
+    </RelativeLayout>
+</merge>
