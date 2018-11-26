@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageButton
 import android.widget.TextView
+import com.android.volley.RequestQueue
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.fragments.*
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fragmentNews = FragmentNews()  //создание фрагментов-объектов
+        fragmentNews = FragmentNews(this)  //создание фрагментов-объектов
         fragmentReviews = FragmentReviews()
         fragmentSearch = FragmentSearch()
         fragmentProfile = FragmentProfile()
@@ -45,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         newsButton!!.setOnClickListener {
             showFragment(fragmentNews!!,1,"NEWS") //подгрузка текущего фрагмента
             bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
+
+
         }
         reviewsButton!!.setOnClickListener {
             showFragment(fragmentReviews!!,2,"REVIEWS")
