@@ -55,17 +55,17 @@ object Crypto {
     }
 
     /*
-    * getPassHash get's md5 password hash
+    * getPassHash get's sha-256 hash
     * @key - string key
-    * Return: password hash in string
+    * Return: hash in string
     */
-    fun getPassHash(key: String): String {
-        var digestsPass: ByteArray? = null
+    fun getHash(key: String): String {
+        var digestsKey: ByteArray? = null
         try {
             val passByte = key.toByteArray(charset("UTF-8"))
-            val md = MessageDigest.getInstance("MD5")
-            digestsPass = md.digest(passByte)
-            return keyToString(SecretKeySpec(digestsPass, 0, digestsPass.size, "AES"))
+            val md = MessageDigest.getInstance("SHA-256")
+            digestsKey = md.digest(passByte)
+            return keyToString(SecretKeySpec(digestsKey, 0, digestsKey.size, "AES"))
         } catch (e: Exception) {
             return error("Error")
         }
