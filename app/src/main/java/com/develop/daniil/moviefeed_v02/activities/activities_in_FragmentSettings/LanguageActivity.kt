@@ -1,6 +1,7 @@
 package com.develop.daniil.moviefeed_v02.activities.activities_in_FragmentSettings
 
-import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -8,7 +9,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 
 
@@ -22,8 +22,12 @@ class LanguageActivity : AppCompatActivity() {
     var russian_check: ImageView? = null
     var ukrainian_check: ImageView? = null
     var german_check: ImageView? = null
+    var temp: ImageView? = null
+    var sPref: SharedPreferences? = null //сохр язык
+    var savedId: Int? = 0
 
-    @SuppressLint("ResourceAsColor")
+    val SAVED_TEXT = "saved_text"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_language)
@@ -42,19 +46,23 @@ class LanguageActivity : AppCompatActivity() {
         ukrainian_check = findViewById(R.id.ukrainian_check)
         german_check = findViewById(R.id.german_check)
 
-        english_check!!.visibility = View.VISIBLE //default lang
+        loadLanguage() //default lang
 
         english_button!!.setOnClickListener {
-            setChecked(english_check!!)
+            setChecked(R.id.english_check)
+            saveLanguage(R.id.english_check)
         }
         russian_button!!.setOnClickListener {
-            setChecked(russian_check!!)
+            setChecked(R.id.russian_check)
+            saveLanguage(R.id.russian_check)
         }
         ukrainian_button!!.setOnClickListener {
-            setChecked(ukrainian_check!!)
+            setChecked(R.id.ukrainian_check)
+            saveLanguage(R.id.ukrainian_check)
         }
         german_button!!.setOnClickListener {
-            setChecked(german_check!!)
+            setChecked(R.id.german_check)
+            saveLanguage(R.id.german_check)
         }
         /*
         *колхожу стрелочку "назад"
@@ -66,14 +74,32 @@ class LanguageActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(false)
     }
 
-    fun setChecked(temp: ImageView){
+    private fun loadLanguage() {
+        sPref = getPreferences(Context.MODE_PRIVATE)
+        savedId = sPref!!.getInt(SAVED_TEXT, 1)
+        setChecked(savedId!!)
+    }
+
+    fun setChecked(id: Int){
         english_check!!.visibility = View.INVISIBLE
         russian_check!!.visibility = View.INVISIBLE
         ukrainian_check!!.visibility = View.INVISIBLE
         german_check!!.visibility = View.INVISIBLE
 
-        temp.visibility = View.VISIBLE
-        Toast.makeText(this,"Language saved", Toast.LENGTH_SHORT).show()
+        temp = findViewById(id)
+        temp!!.visibility = View.VISIBLE //текущий "чек" делаю видимым
+    }
+
+    private fun saveLanguage(id: Int){
+        sPref = getPreferences(Context.MODE_PRIVATE) //сохраняю выбранный язык
+        val ed = sPref!!.edit()
+        ed.putInt(SAVED_TEXT, id)
+        ed.apply()
+    }
+
+    override fun onDestroy() {  //если пользователь закрыл приложение
+        super.onDestroy()
+        loadLanguage()
     }
 
     override fun onSupportNavigateUp(): Boolean { //кнопка "назад"
