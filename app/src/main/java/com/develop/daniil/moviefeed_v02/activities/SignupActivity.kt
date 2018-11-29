@@ -29,25 +29,27 @@ class SignupActivity: AppCompatActivity() {
 
             //Get key from DB
 
+            if(passInput.text == confPassInput.text){
+                //enc and get request to server
+            }
+
             val url: String = "http://35.159.33.122/register"
 
         }
     }
 
+    //encrypt login
     fun encLogin(login: String,key: String): String{
         return Crypto.encryptString(login,Crypto.stringToKey(key))
     }
-
+    //encrypt password
     fun encPass(pass: String,key: String): String{
         return Crypto.encryptString(pass,Crypto.stringToKey(key))
     }
-
+    //encrypt email
     fun encEmail(email: String,key: String): String{
         return Crypto.encryptString(email,Crypto.stringToKey(key))
     }
 
-    fun encConfPass(confPass: String,key: String): String{
-        return Crypto.encryptString(confPass,Crypto.stringToKey(key))
-    }
 
 }
