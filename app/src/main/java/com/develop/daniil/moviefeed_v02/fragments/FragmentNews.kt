@@ -10,27 +10,33 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.utils.ListAdapter
-import java.util.*
+import com.develop.daniil.moviefeed_v02.utils.row_model
 
 class FragmentNews: Fragment() {
 
-    private val mList = ArrayList<String>()
+    private var arrRowModel: ArrayList<row_model> = ArrayList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_news, container, false)
 
-        fakeData()
+        newsData()
         setUpRecyclerView(view)
         return view
     }
 
-    private fun fakeData() { //заполним листвью
-        for (i in 0..20)
-            mList.add("Режиссер «Бамблби» может поставить «Стражей Галактики 3»")
+    private fun newsData() { //заполним листвью
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
     }
 
     private fun setUpRecyclerView(view: View) { //прикручиваем массив mList адптером к ресайклер вью
         val mRecyclerView = view.findViewById<RecyclerView>(R.id.main_recyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(view.context, LinearLayout.VERTICAL, false)
-        mRecyclerView.adapter = ListAdapter(mList) //adapter в папку utils
+        mRecyclerView.adapter = ListAdapter(view.context, arrRowModel) //adapter в папку utils
     }
 }
