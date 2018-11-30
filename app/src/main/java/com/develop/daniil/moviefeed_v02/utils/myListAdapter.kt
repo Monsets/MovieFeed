@@ -6,8 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.android.volley.Response
 import com.develop.daniil.moviefeed_v02.R
 import java.util.*
+import com.android.volley.VolleyError
+import org.json.JSONObject
+import com.android.volley.toolbox.JsonObjectRequest
+
+
 
 internal class ListAdapter(list: List<String>?) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
     private val mList = ArrayList<String>()
@@ -27,6 +33,7 @@ internal class ListAdapter(list: List<String>?) : RecyclerView.Adapter<ListAdapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) { //классная фича для ресайклер вью,
+
         holder.textView.text = mList[position] //забиваем держатель textView текстом. Обеспечивает плавность прокрутки
     }
 
