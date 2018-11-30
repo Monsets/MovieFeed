@@ -28,27 +28,41 @@ class FragmentSettings: Fragment() {
         aboutAuthors_button = view.findViewById(R.id.aboutAuthors_button)
 
         newsSources_button!!.setOnClickListener {//переход к выбору ресурсов
+            newsSources_button!!.textSize = 20F //увеличивает шрифт на кнопке
             val intent = Intent(activity, NewsSourcesActivity::class.java)
             startActivity(intent)
         }
         reviewsSources_button!!.setOnClickListener {//переход к выбору ресурсов
+            reviewsSources_button!!.textSize = 20F //увеличивает шрифт на кнопке
             val intent = Intent(activity, ReviewsSourcesActivity::class.java)
             startActivity(intent)
         }
         language_button!!.setOnClickListener {
+            language_button!!.textSize = 20F //увеличивает шрифт на кнопке
             val intent = Intent(activity, LanguageActivity::class.java)
             startActivity(intent)
         }
         aboutApp_button!!.setOnClickListener {
+            aboutApp_button!!.textSize = 20F //увеличивает шрифт на кнопке
             val intent = Intent(activity, AboutAppActivity::class.java)
             startActivity(intent)
         }
         aboutAuthors_button!!.setOnClickListener {
+            aboutAuthors_button!!.textSize = 20F //увеличивает шрифт на кнопке
             val intent = Intent(activity, AboutAuthorsActivity::class.java)
             startActivity(intent)
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        newsSources_button!!.textSize = 14F //по возвращению к текущему активити
+        reviewsSources_button!!.textSize = 14F //уменьшаю шрифт всех кнопок до дефолтных
+        language_button!!.textSize = 14F
+        aboutApp_button!!.textSize = 14F
+        aboutAuthors_button!!.textSize = 14F
     }
 
 }

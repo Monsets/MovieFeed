@@ -26,6 +26,7 @@ android:background="@color/colorPrimary">
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="textLongMessage"
             android:id="@+id/newUsername_editText"
             android:hint="Write and click a button"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +40,8 @@ android:background="@color/colorPrimary">
             android:src="@drawable/ic_check"
             android:background="@drawable/circle_for_button"
             app:layout_constraintStart_toEndOf="@+id/newUsername_editText"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" android:layout_marginTop="2dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView7" android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp" android:layout_marginStart="16dp"/>
 
     <TextView
             android:text="MrMonset@mail.ru"
@@ -63,6 +65,7 @@ android:background="@color/colorPrimary">
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="textLongMessage"
             android:id="@+id/newEmail_editText"
             android:hint="Write and click a button"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +79,8 @@ android:background="@color/colorPrimary">
             android:src="@drawable/ic_check"
             android:background="@drawable/circle_for_button"
             app:layout_constraintStart_toEndOf="@+id/newEmail_editText"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" android:layout_marginTop="2dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView11" android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp" android:layout_marginStart="16dp"/>
     <TextView
             android:text="Do you want to change a password?"
             android:layout_width="wrap_content"
@@ -90,6 +94,7 @@ android:background="@color/colorPrimary">
             android:layout_width="220dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="textLongMessage"
             android:id="@+id/currentPassword_editText"
             android:hint="Write a current password"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +105,7 @@ android:background="@color/colorPrimary">
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="textLongMessage"
             android:id="@+id/newPassword_editText"
             android:hint="Write a new password"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +120,8 @@ android:background="@color/colorPrimary">
             android:background="@drawable/circle_for_button"
             app:layout_constraintStart_toEndOf="@+id/newPassword_editText"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/currentPassword_editText"/>
+            app:layout_constraintTop_toBottomOf="@+id/currentPassword_editText" android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:src="@drawable/ic_exit"

@@ -19,6 +19,7 @@
             android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="textLongMessage"
             android:id="@+id/login_editText_LoginActivity"
             android:hint="Login"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
@@ -29,7 +30,7 @@
     <EditText
             android:layout_width="225dp"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:inputType="textLongMessage"
             android:ems="10"
             android:id="@+id/password_editText_LoginActivity"
             android:hint="Password"
