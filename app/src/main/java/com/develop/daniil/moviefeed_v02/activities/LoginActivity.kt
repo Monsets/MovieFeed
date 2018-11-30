@@ -9,6 +9,7 @@ import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.R.id.login_button_LoginActivity
 import com.develop.daniil.moviefeed_v02.utils.Crypto
 import kotlinx.android.synthetic.main.activity_login.*
+import javax.crypto.SecretKey
 
 class LoginActivity: AppCompatActivity() {
 
@@ -33,6 +34,10 @@ class LoginActivity: AppCompatActivity() {
             val encLogin: String =
                 Crypto.encryptString(login.text.toString(), Crypto.stringToKey(encPass))//Шифруем логин
             val decLogin: String = Crypto.decryptString(encLogin, Crypto.stringToKey(encPass))
+
+            val keysec: SecretKey = Crypto.stringToKey("mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk=")
+            val seckey: String = Crypto.keyToString(keysec)
+
         }
 
 
