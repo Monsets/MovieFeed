@@ -11,35 +11,38 @@ class MyDBHandler(context: Context, name: String?,
 
     override fun onCreate(db: SQLiteDatabase) {
         val CREATE_NEWS_TABLE = ("CREATE TABLE " +
-                TABLE_NEWS + "("
+                  TABLE_NEWS + "("
                 + COLUMN_ID
-                + COLUMN_REF
+                + COLUMN_NEWSID
                 + COLUMN_TITLE
                 + COLUMN_TEXT
                 + COLUMN_PICTURE
-                + COLUMN_DATE
-                + COLUMN_SOURCE + ")")
+                + COLUMN_SOURCE
+                + COLUMN_REF
+                + COLUMN_DATE + ")")
 
         val CREATE_REVIEWS_TABLE = ("CREATE TABLE " +
-                TABLE_NEWS + "("
+                  TABLE_NEWS + "("
                 + COLUMN_ID
-                + COLUMN_REF
+                + COLUMN_NEWSID
                 + COLUMN_TITLE
                 + COLUMN_TEXT
                 + COLUMN_PICTURE
-                + COLUMN_DATE
                 + COLUMN_SOURCE
+                + COLUMN_REF
+                + COLUMN_DATE
                 + COLUMN_AUTHOR
                 + COLUMN_STATUS + ")")
 
         val CREATE_USER_TABLE = ("CREATE TABLE " +
-                TABLE_NEWS + "("
+                  TABLE_NEWS + "("
                 + COLUMN_ID
                 + COLUMN_LOGIN
                 + COLUMN_PASS
                 + COLUMN_EMAIL
                 + COLUMN_ROOT
                  + ")")
+
         db.execSQL(CREATE_NEWS_TABLE)
 
     }
@@ -61,6 +64,7 @@ class MyDBHandler(context: Context, name: String?,
         val COLUMN_PICTURE = "picture STRING,"
         val COLUMN_DATE = "date DATE,"
         val COLUMN_SOURCE = "source STRING"
+        val COLUMN_NEWSID = "newsid INTEGER,"
 
         val TABLE_REVIEWS = "tblReviews"
         val COLUMN_STATUS = "status INTEGER,"
