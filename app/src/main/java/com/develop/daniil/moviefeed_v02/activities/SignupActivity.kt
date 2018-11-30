@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import com.develop.daniil.moviefeed_v02.R
+import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.Crypto
 
 class SignupActivity: AppCompatActivity() {
@@ -19,6 +20,8 @@ class SignupActivity: AppCompatActivity() {
             startActivity(intent)
         }
 
+        val server = Server(this)
+
         val loginInput = findViewById<EditText>(R.id.login_editText_SignupActivity)
         val emailInput = findViewById<EditText>(R.id.email_editText_SignupActivity)
         val passInput = findViewById<EditText>(R.id.password_editText_SignupActivity)
@@ -26,12 +29,20 @@ class SignupActivity: AppCompatActivity() {
 
         val registerButton = findViewById<Button>(R.id.register_button)
         registerButton.setOnClickListener {
-
-            //Get key from DB
+            //TODO: Добавить подгрузку ключа с бд
+            val key: String? = null
 
             if(passInput.text == confPassInput.text){
-                //enc and get request to server
+                //Send registration request
+                val regResp = server.register(encLogin(loginInput.text.toString(), key!!),
+                    encPass(passInput.text.toString(), key), encEmail(emailInput.text.toString(), key))
 
+                if (regResp == "true") {
+                    //TODO: Реализовать регистрацию
+                }
+                else if (regResp == "") {
+
+                }
             }
 
 

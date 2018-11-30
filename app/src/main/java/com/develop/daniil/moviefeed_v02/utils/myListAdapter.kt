@@ -25,6 +25,8 @@ internal class ListAdapter(var context: Context, var arrRowModel: ArrayList<row_
         }
     }
 
+    //TODO: Реализовать кликабельные объекты
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.row_model, parent, false) //надуваем row_model данными
         return ViewHolder(view)
