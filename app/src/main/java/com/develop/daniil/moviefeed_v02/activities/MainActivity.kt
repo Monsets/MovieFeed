@@ -3,11 +3,16 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
-import com.android.volley.RequestQueue
+import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
+import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.fragments.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,11 +28,13 @@ class MainActivity : AppCompatActivity() {
     var fragmentProfile: FragmentProfile? = null
     var fragmentSettings: FragmentSettings? = null
 
+    val server = Server(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fragmentNews = FragmentNews(this)  //создание фрагментов-объектов
+        fragmentNews = FragmentNews()  //создание фрагментов-объектов
         fragmentReviews = FragmentReviews()
         fragmentSearch = FragmentSearch()
         fragmentProfile = FragmentProfile()
@@ -44,15 +51,20 @@ class MainActivity : AppCompatActivity() {
         newsButton!!.setImageResource(R.drawable.ic_news_black) //default button
 
         newsButton!!.setOnClickListener {
-            showFragment(fragmentNews!!,1,"NEWS") //подгрузка текущего фрагмента
-            bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
-
-
+            doAsync {
+                fragmentNews!!.update(server)
+                uiThread {
+                    showFragment(fragmentNews!!, 1, "NEWS") //подгрузка текущего фрагмента
+                    bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
+                }
+           }
         }
+
         reviewsButton!!.setOnClickListener {
             showFragment(fragmentReviews!!,2,"REVIEWS")
             bottomNavigationHelper(reviewsButton!!, R.drawable.ic_reviews_black)
         }
+
         searchButton!!.setOnClickListener {
             showFragment(fragmentSearch!!,3,"SEARCH")
             bottomNavigationHelper(searchButton!!, R.drawable.ic_search_black)
