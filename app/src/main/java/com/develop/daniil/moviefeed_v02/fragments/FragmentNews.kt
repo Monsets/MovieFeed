@@ -75,4 +75,5 @@ class FragmentNews: Fragment() {
         //TODO: Записывать новые новости в бд
     }
 
+
 }

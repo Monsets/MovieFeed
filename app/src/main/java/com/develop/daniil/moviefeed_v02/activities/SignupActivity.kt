@@ -31,9 +31,9 @@ class SignupActivity: AppCompatActivity() {
 
             if(passInput.text == confPassInput.text){
                 //enc and get request to server
+
             }
 
-            val url: String = "http://35.159.33.122/register"
 
         }
     }

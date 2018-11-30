@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
 
                 showFragment(fragmentNews!!, 1, "NEWS") //подгрузка текущего фрагмента
                 bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
-
             }
             catch (e: Exception) {
                 Log.e("Debug:", e.toString())
