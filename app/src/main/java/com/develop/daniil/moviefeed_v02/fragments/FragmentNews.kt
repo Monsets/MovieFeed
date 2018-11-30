@@ -15,6 +15,8 @@ import com.develop.daniil.moviefeed_v02.RequestsClasses.News
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.ListAdapter
 import com.develop.daniil.moviefeed_v02.utils.row_model
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class FragmentNews: Fragment() {
 
@@ -33,13 +35,10 @@ class FragmentNews: Fragment() {
     }
 
     private fun newsData() { //заполним листвью
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
-        arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        //TODO: Заменить это на подгрузку новостей из бд
+        for (i in 0..15) {
+            arrRowModel.add(row_model("Title .......", R.drawable.image, "Kinoposk", "6 hours later"))
+        }
     }
 
     private fun setUpRecyclerView(view: View) { //прикручиваем массив mList адптером к ресайклер вью
@@ -48,21 +47,32 @@ class FragmentNews: Fragment() {
         mRecyclerView.adapter = ListAdapter(view.context, arrRowModel) //adapter в папку utils
     }
 
+    private fun rebuildNewsList(newsArray: Array<News>){
+        for (i in newsArray.size - 1 downTo 0 step 1) {
+            val news = newsArray[i]
+            arrRowModel.add(0, row_model(news.text, R.drawable.image, news.source, news.date))
+            arrRowModel.remove(arrRowModel.last())
+        }
+    }
+
     fun update(server: Server) {
-        var newsArray: Array<News>? = null
+        doAsync {
+            //Get last news from server
+            var newsArray: Array<News>? = null
             try {
                 newsArray = server.updateNews(2)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e("Debug", e.toString())
             }
 
-        for (news in newsArray!!) {
-            arrRowModel.add(row_model(news.text, R.drawable.image, news.source, news.date))
-        }
+            rebuildNewsList(newsArray!!)
 
-        val mRecyclerView = view1?.findViewById<RecyclerView>(R.id.main_recyclerView)
-        mRecyclerView!!.adapter = ListAdapter(view1!!.context, arrRowModel) //adapter в папку utils
+            //Show new news list
+            uiThread {
+                setUpRecyclerView(view1!!)
+            }
+        }
+        //TODO: Записывать новые новости в бд
     }
 
 }

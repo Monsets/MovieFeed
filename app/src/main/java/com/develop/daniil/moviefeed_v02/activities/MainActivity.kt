@@ -51,13 +51,16 @@ class MainActivity : AppCompatActivity() {
         newsButton!!.setImageResource(R.drawable.ic_news_black) //default button
 
         newsButton!!.setOnClickListener {
-            doAsync {
+            try {
                 fragmentNews!!.update(server)
-                uiThread {
-                    showFragment(fragmentNews!!, 1, "NEWS") //подгрузка текущего фрагмента
-                    bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
-                }
-           }
+
+                showFragment(fragmentNews!!, 1, "NEWS") //подгрузка текущего фрагмента
+                bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
+
+            }
+            catch (e: Exception) {
+                Log.e("Debug:", e.toString())
+            }
         }
 
         reviewsButton!!.setOnClickListener {
