@@ -76,7 +76,7 @@ class LanguageActivity : AppCompatActivity() {
 
     private fun loadLanguage() {
         sPref = getPreferences(Context.MODE_PRIVATE)
-        savedId = sPref!!.getInt(SAVED_TEXT, 1)
+        savedId = sPref!!.getInt(SAVED_TEXT, R.id.english_check)
         setChecked(savedId!!)
     }
 
