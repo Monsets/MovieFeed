@@ -9,16 +9,19 @@ import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.R.id.login_button_LoginActivity
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.Crypto
+import com.develop.daniil.moviefeed_v02.utils.DBHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.crypto.SecretKey
 
 class LoginActivity: AppCompatActivity() {
+    //lateinit var DBHelper : DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         val server = Server(this)
+        var DBHelper:DBHelper = DBHelper(this)
 
         val loginButton: Button = findViewById(R.id.login_button_LoginActivity)
         val login: EditText = findViewById(R.id.login_editText_LoginActivity)
@@ -41,6 +44,10 @@ class LoginActivity: AppCompatActivity() {
             val keysec: SecretKey = Crypto.stringToKey("mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk=")
             val seckey: String = Crypto.keyToString(keysec)
 
+            DBHelper.addRecToUserTable("petuch","123456","email@email.com",1)
+
+            DBHelper.readAll()
+            /*
             //TODO: Изменить агрументы запроса(если требуется, я хз прост)
             if (server.authorize(encLogin, encPass) == "true") {
             //TODO: Реализовать успешный вход
@@ -48,7 +55,7 @@ class LoginActivity: AppCompatActivity() {
             else {
             //TODO: Реализовать обработку ошибок
             }
-
+            */
         }
 
 

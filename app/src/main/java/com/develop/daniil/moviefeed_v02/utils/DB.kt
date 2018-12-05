@@ -1,81 +1,122 @@
 package com.develop.daniil.moviefeed_v02.utils
 
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import android.content.Context
 import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteConstraintException
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
+import android.database.sqlite.SQLiteOpenHelper
+import android.provider.ContactsContract
 
-class MyDBHandler(context: Context, name: String?,
-                  factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+import java.util.ArrayList
 
+class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        val CREATE_NEWS_TABLE = ("CREATE TABLE " +
-                  TABLE_NEWS + "("
-                + COLUMN_ID
-                + COLUMN_NEWSID
-                + COLUMN_TITLE
-                + COLUMN_TEXT
-                + COLUMN_PICTURE
-                + COLUMN_SOURCE
-                + COLUMN_REF
-                + COLUMN_DATE + ")")
-
-        val CREATE_REVIEWS_TABLE = ("CREATE TABLE " +
-                  TABLE_NEWS + "("
-                + COLUMN_ID
-                + COLUMN_NEWSID
-                + COLUMN_TITLE
-                + COLUMN_TEXT
-                + COLUMN_PICTURE
-                + COLUMN_SOURCE
-                + COLUMN_REF
-                + COLUMN_DATE
-                + COLUMN_AUTHOR
-                + COLUMN_STATUS + ")")
-
-        val CREATE_USER_TABLE = ("CREATE TABLE " +
-                  TABLE_NEWS + "("
-                + COLUMN_ID
-                + COLUMN_LOGIN
-                + COLUMN_PASS
-                + COLUMN_EMAIL
-                + COLUMN_ROOT
-                 + ")")
-
         db.execSQL(CREATE_NEWS_TABLE)
+        db.execSQL(CREATE_REVIEWS_TABLE)
+        db.execSQL(CREATE_USER_TABLE)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        db.execSQL(SQL_DELETE_NEWS)
+        db.execSQL(SQL_DELETE_REVIEWS)
+        db.execSQL(SQL_DELETE_USER)
+        onCreate(db)
+    }
+
+    override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        onUpgrade(db, oldVersion, newVersion)
+    }
+
+    fun readAll(){
+        val db = this.writableDatabase
+        print(db.rawQuery("SELECT * FROM "+ TABLE_USER, null))
 
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int,
-                           newVersion: Int) {
+
+    @Throws(SQLiteConstraintException::class)
+    fun addRecToUserTable(login:String,pass:String,email: String,root:Int):Boolean{
+        val db = writableDatabase
+
+        val values = ContentValues()
+
+        values.put(COLUMN_LOGIN, login)
+        values.put(COLUMN_PASS, pass)
+        values.put(COLUMN_EMAIL, email)
+        values.put(COLUMN_ROOT, root)
+
+        // Insert the new row, returning the primary key value of the new row
+        val newRowId = db.insert(TABLE_USER, null, values)
+
+        return true
 
     }
 
     companion object {
         private val DATABASE_VERSION = 1
-        private val DATABASE_NAME = "MovieFeed"
+        private val DB_NAME = "MovieFeed"
 
         val TABLE_NEWS = "tblNews"
-        val COLUMN_ID = "_id INTEGER PRIMARY KEY,"
-        val COLUMN_REF = "ref STRING,"
-        val COLUMN_TITLE = "title STRING,"
-        val COLUMN_TEXT = "text STRING,"
-        val COLUMN_PICTURE = "picture STRING,"
-        val COLUMN_DATE = "date DATE,"
-        val COLUMN_SOURCE = "source STRING"
-        val COLUMN_NEWSID = "newsid INTEGER,"
+        val COLUMN_ID = "_id"
+        val COLUMN_REF = "ref"
+        val COLUMN_TITLE = "title"
+        val COLUMN_TEXT = "text"
+        val COLUMN_PICTURE = "picture"
+        val COLUMN_DATE = "date"
+        val COLUMN_SOURCE = "source"
+        val COLUMN_NEWSID = "newsid"
 
         val TABLE_REVIEWS = "tblReviews"
-        val COLUMN_STATUS = "status INTEGER,"
-        val COLUMN_AUTHOR = "author STRING,"
+        val COLUMN_STATUS = "status"
+        val COLUMN_AUTHOR = "author"
 
         val TABLE_USER = "tblUser"
-        val COLUMN_LOGIN = "login STRING,"
-        val COLUMN_EMAIL = "email STRING,"
-        val COLUMN_ROOT = "root INTEGER,"
-        val COLUMN_PASS = "password STRING,"
+        val COLUMN_LOGIN = "login"
+        val COLUMN_EMAIL = "email"
+        val COLUMN_ROOT = "root"
+        val COLUMN_PASS = "password"
 
+        val CREATE_NEWS_TABLE = ("CREATE TABLE " +
+                TABLE_NEWS + "("
+                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_NEWSID + "INTEGER,"
+                + COLUMN_TITLE + "TEXT,"
+                + COLUMN_TEXT + "TEXT,"
+                + COLUMN_PICTURE + "TEXT,"
+                + COLUMN_SOURCE + "TEXT,"
+                + COLUMN_REF + "TEXT,"
+                + COLUMN_DATE + "DATE"+ ")")
 
+        val CREATE_REVIEWS_TABLE = ("CREATE TABLE " +
+                TABLE_REVIEWS + "("
+                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_TITLE + "TEXT,"
+                + COLUMN_TEXT + "TEXT,"
+                + COLUMN_PICTURE + "TEXT,"
+                + COLUMN_SOURCE + "TEXT,"
+                + COLUMN_REF + "TEXT,"
+                + COLUMN_DATE + "DATE,"
+                + COLUMN_AUTHOR + "TEXT,"
+                + COLUMN_STATUS + "INTEGER"
+                + ")")
+
+        val CREATE_USER_TABLE = ("CREATE TABLE " +
+                TABLE_USER + "("
+                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_LOGIN + "TEXT,"
+                + COLUMN_PASS + "TEXT,"
+                + COLUMN_EMAIL + "TEXT,"
+                + COLUMN_ROOT + "INTEGER"
+                + ")")
+
+        private val SQL_DELETE_NEWS = "DROP TABLE IF EXISTS " + TABLE_NEWS
+        private val SQL_DELETE_REVIEWS = "DROP TABLE IF EXISTS " + TABLE_REVIEWS
+        private val SQL_DELETE_USER = "DROP TABLE IF EXISTS " + TABLE_USER
     }
+
 }
