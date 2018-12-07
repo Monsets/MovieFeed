@@ -109,32 +109,9 @@ class FragmentNews: Fragment() {
     private fun rebuildNewsList(newsArray: Array<News>){
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
-            itemList.add(0, Item(news.text, R.drawable.image, news.source, news.date))
+            itemList.add(0, Item(news.text, R.drawable.image, news.source_id, news.date))
             itemList.remove(itemList.last())
         }
     }
-//
-//    fun update(server: Server) {
-//        doAsync {
-//            //Get last news from server
-//            var newsArray: Array<News>? = null
-//            try {
-//                newsArray = server.updateNews(2)
-//            } catch (e: Exception) {
-//                Log.e("Debug", e.toString())
-//            }
-//
-//            rebuildNewsList(newsArray!!)
-//        }
-
-
-            //Show new news list
-//            uiThread {
-//                setUpRecyclerView(view1!!)
-//            }
-//        }
-//        //TODO: Записывать новые новости в бд
-//    }
-
 
 }
