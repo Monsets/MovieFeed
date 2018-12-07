@@ -5,4 +5,6 @@
     <color name="colorAccent">#f9ff0008</color>
     <color name="Black">#000000</color>
     <color name="ToolbarColor">#E0E0E0</color>
+    <color name="Exmp">#c1000000</color>
+    <color name="Exmp1">#25000000</color>
 </resources>

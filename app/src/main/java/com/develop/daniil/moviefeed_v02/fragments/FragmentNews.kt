@@ -3,6 +3,7 @@ package com.develop.daniil.moviefeed_v02.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,9 +22,10 @@ class FragmentNews: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_news, container, false)
         val recyclerview = view.findViewById<RecyclerView>(R.id.main_recyclerView)
+        val UpSwipe = view.findViewById<SwipeRefreshLayout>(R.id.UpSwipe)
 
         newsData()
-        setUpRecyclerView(recyclerview)
+        setUpRecyclerView(recyclerview, UpSwipe)
         return view
     }
 
@@ -34,7 +36,7 @@ class FragmentNews: Fragment() {
         }
     }
 
-        private fun setUpRecyclerView(recyclerview: RecyclerView){
+        private fun setUpRecyclerView(recyclerview: RecyclerView, UpSwipe: SwipeRefreshLayout){
             val itemArrayAdapter = ListAdapter(itemList)
             recyclerview.setLayoutManager(linearLayoutManager)
             recyclerview.setItemAnimator(DefaultItemAnimator())
@@ -62,11 +64,20 @@ class FragmentNews: Fragment() {
                                     newItems.add(Item("Title", R.drawable.image, "Link","Time"))
                                 }
                                 itemArrayAdapter.addItems(newItems)
-                            }, 2000)
+                            }, 1000)
                         }
                     }
                 }
             })
+
+            UpSwipe.setOnRefreshListener {
+                val handler = Handler()
+
+                handler.postDelayed({
+
+                    UpSwipe.isRefreshing = false
+                }, 2000)
+            }
     }
 
 }
