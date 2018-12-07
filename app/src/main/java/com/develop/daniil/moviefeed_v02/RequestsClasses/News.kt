@@ -5,7 +5,7 @@ data class News(
     val title: String,
     val text: String,
     val picture: String,
-    val source_id: String,
+    val source_id: Int,
     val ref: String,
     val date: String
 )
