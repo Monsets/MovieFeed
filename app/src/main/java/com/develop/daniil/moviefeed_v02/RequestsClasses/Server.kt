@@ -38,7 +38,8 @@ class Server(val context: Context) {
         val url = Uri.parse(serverUrl)
             .buildUpon().path(register).appendQueryParameter("login", login)
             .appendQueryParameter("pass", password)
-            .appendQueryParameter("email", email).build().toString()
+            .appendQueryParameter("email", email)
+            .appendQueryParameter("data", login.toString()+password.toString()).build().toString()
 
         val resp: String? = get(url).text
 
@@ -49,7 +50,8 @@ class Server(val context: Context) {
         //URL building
         val url = Uri.parse(serverUrl)
             .buildUpon().path(authorization).appendQueryParameter("login", login.toString())
-            .appendQueryParameter("pass", password.toString()).build().toString()
+            .appendQueryParameter("pass", password.toString())
+            .appendQueryParameter("data", login.toString()+password.toString()).build().toString()
 
         val resp: String? = get(url).text
 

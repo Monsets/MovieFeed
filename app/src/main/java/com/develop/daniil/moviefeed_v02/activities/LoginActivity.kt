@@ -3,6 +3,7 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -44,22 +45,35 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val encPass: String = Crypto.encryptString(pass.text.toString(), Crypto.stringToKey(funk.getKluch()))//Шифруем логин//Получаем хеш пароля
+            if (TextUtils.isEmpty(login.text)) {
+                login.setError("Login is required!");
+                return@setOnClickListener
+            }
+
+            if (TextUtils.isEmpty(pass.text)) {
+                pass.setError("Password is required!");
+                return@setOnClickListener
+            }
+            val encPass: String =
+                Crypto.encryptString(pass.text.toString(), Crypto.stringToKey(funk.getKluch()))//Шифруем пароль
             val encLogin: String =
                 Crypto.encryptString(login.text.toString(), Crypto.stringToKey(funk.getKluch()))//Шифруем логин
-            intent = Intent(this, MainActivity::class.java)
-            DBHelper.addRecToUserTable("petuch","123456","email@email.com",1)
 
-            DBHelper.readAll()
+            //DBHelper.addRecToUserTable("petuch","123456","email@email.com",1)
+
+            //DBHelper.readAll()
+
+            //Отправка и обработка запроса авторизации
             doAsync {
-                val test = server.authorize(encLogin, encPass)
+                val auth = server.authorize(encLogin, encPass)
                 try {
                     uiThread {
-                        if (test!!.toInt() == 0) {
+                        if (auth.toString().trim().toInt() == 0) {
+                            intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
-
                         } else {
-
+                            val toast = Toast.makeText(applicationContext, "User is unregistered!", Toast.LENGTH_SHORT)
+                            toast.show()
                         }
                     }
                 } catch (e: Exception) {
@@ -67,8 +81,5 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-            //TODO: Изменить агрументы запроса(если требуется, я хз прост)
-
-
     }
 }

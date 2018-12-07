@@ -3,6 +3,7 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -37,22 +38,46 @@ class SignupActivity: AppCompatActivity() {
         val passInput = findViewById<EditText>(R.id.password_editText_SignupActivity)
         val confPassInput = findViewById<EditText>(R.id.ConfirmPassword_editText)
 
+
+
         val registerButton = findViewById<Button>(R.id.register_button)
         registerButton.setOnClickListener {
+            if (TextUtils.isEmpty(loginInput.text)) {
+                loginInput.setError("Login is required!");
+                return@setOnClickListener
+            }
 
-            if(true){
+            if (TextUtils.isEmpty(emailInput.text)) {
+                emailInput.setError("Email is required!");
+                return@setOnClickListener
+            }
+
+            if (TextUtils.isEmpty(passInput.text)) {
+                passInput.setError("Password is required!");
+                return@setOnClickListener
+            }
+
+            if (TextUtils.isEmpty(confPassInput.text)) {
+                confPassInput.setError("Please, input the confirmation of password");
+                return@setOnClickListener
+            }
+            val test = passInput.text.toString().equals(confPassInput.text.toString())
+            if(passInput.text.toString().equals(confPassInput.text.toString())){
                 //Send registration request
                 doAsync {
                     try {
                         val regResp = server.register(encLogin(loginInput.text.toString(),funk.getKluch()),
                             encPass(passInput.text.toString(), funk.getKluch()), encEmail(emailInput.text.toString(), funk.getKluch()))
-                        if (regResp == "true") {
+                        if (regResp.toString().trim().toInt() == 0) {
                             uiThread {
+                                val successReg = Toast.makeText(applicationContext, "Success Registration", Toast.LENGTH_SHORT)
+                                successReg.show()
                                 intent = Intent(this@SignupActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 }
-                        } else if (regResp == "") {
-
+                        } else if (regResp.toString().trim().toInt() == 1) {
+                            loginInput.setError("Login already exists");
+                            return@doAsync
                         }
                     }catch (e: Exception) {
                         Log.e("Debug:", e.toString())

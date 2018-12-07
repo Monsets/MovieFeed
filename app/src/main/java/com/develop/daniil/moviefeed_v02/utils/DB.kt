@@ -35,16 +35,21 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DATA
 
     fun readAll(){
         val db = this.writableDatabase
-        Log.e("Debug",(db.rawQuery("SELECT * FROM "+ TABLE_USER, null)).toString())
+        val cur = db.rawQuery("SELECT * FROM "+ TABLE_USER, null)
+
+            // Log.e("Debug",cur.get)
     }
 
-    fun checkAuth(login:String){
+    fun getUserInfo(login:String):String{
         val db = this.readableDatabase
         val c:Cursor =  db.rawQuery("SELECT * FROM "+ TABLE_USER + " WHERE "+ COLUMN_LOGIN +" = "+login , null)
 
         if(c.getCount() == 0){
-            //TODO: Сделать обработку неавторизации
+            return "null"
         }
+        return "DOPISHAT"
+
+        //TODO: ДОПИСАТЬ ФУНКЦИЮ!!!!!
     }
 
 
