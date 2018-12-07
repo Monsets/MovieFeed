@@ -87,6 +87,13 @@ class SignupActivity: AppCompatActivity() {
 
 
         }
+       registerButton.setOnClickListener {
+
+            //Get key from DB
+
+            val url: String = "http://35.159.33.122/register"
+
+        }
     }
 
     //encrypt login
@@ -97,6 +104,7 @@ class SignupActivity: AppCompatActivity() {
     fun encPass(pass: String,key: String): String{
         return Crypto.encryptString(pass,Crypto.stringToKey(key))
     }
+
     //encrypt email
     fun encEmail(email: String,key: String): String{
         return Crypto.encryptString(email,Crypto.stringToKey(key))

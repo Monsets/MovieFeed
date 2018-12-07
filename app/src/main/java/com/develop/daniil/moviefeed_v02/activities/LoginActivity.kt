@@ -28,15 +28,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val server = Server(this)
-        var DBHelper: DBHelper = DBHelper(this)
-        var funk: funk = funk()
-
         val loginButton: Button = findViewById(R.id.login_button_LoginActivity)
         val login: EditText = findViewById(R.id.login_editText_LoginActivity)
         val pass: EditText = findViewById(R.id.password_editText_LoginActivity)
 
-        val signup_button: Button = findViewById(R.id.SignUp_Button_LoginActivity)
+        val server = Server(this)
+        var DBHelper: DBHelper = DBHelper(this)
+        var funk: funk = funk()
+
+       val signup_button: Button = findViewById(R.id.SignUp_Button_LoginActivity)
 
         signup_button.setOnClickListener {
             //переход на регистрацию

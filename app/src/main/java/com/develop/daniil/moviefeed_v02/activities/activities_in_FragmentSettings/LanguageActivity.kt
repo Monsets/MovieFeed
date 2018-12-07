@@ -24,7 +24,7 @@ class LanguageActivity : AppCompatActivity() {
     var german_check: ImageView? = null
     var temp: ImageView? = null
     var sPref: SharedPreferences? = null //сохр язык
-    var savedId: Int? = 0
+    var savedId: Int? = R.id.english_check
 
     val SAVED_TEXT = "saved_text"
 
@@ -46,7 +46,13 @@ class LanguageActivity : AppCompatActivity() {
         ukrainian_check = findViewById(R.id.ukrainian_check)
         german_check = findViewById(R.id.german_check)
 
-        loadLanguage() //default lang
+        try {
+            loadLanguage()
+        }
+        catch (e: Throwable){
+            saveLanguage(R.id.english_check)
+            loadLanguage()
+        }
 
         english_button!!.setOnClickListener {
             setChecked(R.id.english_check)
@@ -76,7 +82,7 @@ class LanguageActivity : AppCompatActivity() {
 
     private fun loadLanguage() {
         sPref = getPreferences(Context.MODE_PRIVATE)
-        savedId = sPref!!.getInt(SAVED_TEXT, 1)
+        savedId = sPref!!.getInt(SAVED_TEXT, R.id.english_check)
         setChecked(savedId!!)
     }
 

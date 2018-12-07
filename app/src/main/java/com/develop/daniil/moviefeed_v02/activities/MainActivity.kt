@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         newsButton!!.setOnClickListener {
             try {
-                fragmentNews!!.update(server)
+                //fragmentNews!!.update(server)
 
                 showFragment(fragmentNews!!, 1, "NEWS") //подгрузка текущего фрагмента
                 bottomNavigationHelper(newsButton!!, R.drawable.ic_news_black) //выделение кнопки чёрным
@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e("Debug:", e.toString())
             }
         }
+
 
         reviewsButton!!.setOnClickListener {
             showFragment(fragmentReviews!!,2,"REVIEWS")
