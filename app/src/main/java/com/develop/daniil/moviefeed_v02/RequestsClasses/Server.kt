@@ -55,4 +55,10 @@ class Server(val context: Context) {
 
         return resp
     }
+
+    fun getSources(): Array<String>? {
+        //TODO: Реализовать получение списка источников с сервера
+        var k: Array<String>? = null
+        return k
+    }
 }

@@ -16,7 +16,6 @@ import com.develop.daniil.moviefeed_v02.utils.Item
 import com.develop.daniil.moviefeed_v02.RequestsClasses.News
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.ListAdapter
-import com.develop.daniil.moviefeed_v02.utils.row_model
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -35,8 +34,8 @@ class FragmentNews: Fragment() {
         newsData()
         view1 = view
 
-        setUpRecyclerView(view)
         setUpRecyclerView(recyclerview, UpSwipe)
+
         return view
     }
 
@@ -85,6 +84,21 @@ class FragmentNews: Fragment() {
                 val handler = Handler()
 
                 handler.postDelayed({
+                    val server = Server(view!!.context)
+                    doAsync {
+                        //Get last news from server
+                        var newsArray: Array<News>? = null
+                        try {
+                            newsArray = server.updateNews(2)
+                        } catch (e: Exception) {
+                            Log.e("Debug", e.toString())
+                        }
+
+                        rebuildNewsList(newsArray!!)
+                        uiThread {
+                            itemArrayAdapter.notifyDataSetChanged()
+                        }
+                    }
 
                     UpSwipe.isRefreshing = false
                 }, 2000)
@@ -95,30 +109,32 @@ class FragmentNews: Fragment() {
     private fun rebuildNewsList(newsArray: Array<News>){
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
-            arrRowModel.add(0, row_model(news.text, R.drawable.image, news.source, news.date))
-            arrRowModel.remove(arrRowModel.last())
+            itemList.add(0, Item(news.text, R.drawable.image, news.ref, news.date))
+            itemList.remove(itemList.last())
         }
     }
+//
+//    fun update(server: Server) {
+//        doAsync {
+//            //Get last news from server
+//            var newsArray: Array<News>? = null
+//            try {
+//                newsArray = server.updateNews(2)
+//            } catch (e: Exception) {
+//                Log.e("Debug", e.toString())
+//            }
+//
+//            rebuildNewsList(newsArray!!)
+//        }
 
-    fun update(server: Server) {
-        doAsync {
-            //Get last news from server
-            var newsArray: Array<News>? = null
-            try {
-                newsArray = server.updateNews(2)
-            } catch (e: Exception) {
-                Log.e("Debug", e.toString())
-            }
-
-            rebuildNewsList(newsArray!!)
 
             //Show new news list
-            uiThread {
-                setUpRecyclerView(view1!!)
-            }
-        }
-        //TODO: Записывать новые новости в бд
-    }
+//            uiThread {
+//                setUpRecyclerView(view1!!)
+//            }
+//        }
+//        //TODO: Записывать новые новости в бд
+//    }
 
 
 }
