@@ -14,6 +14,27 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
 
     val REGULAR_ITEM = 0
     val FOOTER_ITEM = 1
+        init {
+            this.Name = v.findViewById(R.id.newsName_textView) as TextView
+            this.Image = v.findViewById(R.id.newsPicture_imageView) as ImageView
+            this.Link = v.findViewById(R.id.link_textView) as TextView
+            this.Time = v.findViewById(R.id.newsTime_textView) as TextView
+        }
+    }
+
+    //TODO: Реализовать кликабельные объекты
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_model, parent, false) //надуваем row_model данными
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.Name.text = arrRowModel[position].Name
+        holder.Image.setImageResource(arrRowModel[position].Image)
+        holder.Link.text = arrRowModel[position].Link
+        holder.Time.text = arrRowModel[position].Time
+    }
 
     override fun getItemCount(): Int {
         return itemList.size

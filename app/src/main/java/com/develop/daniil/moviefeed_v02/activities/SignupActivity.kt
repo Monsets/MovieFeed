@@ -47,14 +47,7 @@ class SignupActivity: AppCompatActivity() {
 
 
         }
-
-        val loginInput = findViewById<EditText>(R.id.login_editText_SignupActivity)
-        val emailInput = findViewById<EditText>(R.id.email_editText_SignupActivity)
-        val passInput = findViewById<EditText>(R.id.password_editText_SignupActivity)
-        val confPassInput = findViewById<EditText>(R.id.ConfirmPassword_editText)
-
-        val registerButton = findViewById<Button>(R.id.register_button)
-        registerButton.setOnClickListener {
+       registerButton.setOnClickListener {
 
             //Get key from DB
 
@@ -71,6 +64,7 @@ class SignupActivity: AppCompatActivity() {
     fun encPass(pass: String,key: String): String{
         return Crypto.encryptString(pass,Crypto.stringToKey(key))
     }
+
     //encrypt email
     fun encEmail(email: String,key: String): String{
         return Crypto.encryptString(email,Crypto.stringToKey(key))
