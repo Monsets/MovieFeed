@@ -3,16 +3,26 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.Crypto
+import com.develop.daniil.moviefeed_v02.utils.DBHelper
+import com.develop.daniil.moviefeed_v02.utils.funk
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class SignupActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acivity_signup)
+
+        var funk: funk = funk()
+
+        var DBHelper: DBHelper = DBHelper(this)
 
         val skipRegistration_button = findViewById<Button>(R.id.skipRegistration_button)
         skipRegistration_button.setOnClickListener {//переход в маин
@@ -29,19 +39,24 @@ class SignupActivity: AppCompatActivity() {
 
         val registerButton = findViewById<Button>(R.id.register_button)
         registerButton.setOnClickListener {
-            //TODO: Добавить подгрузку ключа с бд
-            val key: String? = null
 
-            if(passInput.text == confPassInput.text){
+            if(true){
                 //Send registration request
-                val regResp = server.register(encLogin(loginInput.text.toString(), key!!),
-                    encPass(passInput.text.toString(), key), encEmail(emailInput.text.toString(), key))
+                doAsync {
+                    try {
+                        val regResp = server.register(encLogin(loginInput.text.toString(),funk.getKluch()),
+                            encPass(passInput.text.toString(), funk.getKluch()), encEmail(emailInput.text.toString(), funk.getKluch()))
+                        if (regResp == "true") {
+                            uiThread {
+                                intent = Intent(this@SignupActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                }
+                        } else if (regResp == "") {
 
-                if (regResp == "true") {
-                    //TODO: Реализовать регистрацию
-                }
-                else if (regResp == "") {
-
+                        }
+                    }catch (e: Exception) {
+                        Log.e("Debug:", e.toString())
+                    }
                 }
             }
 

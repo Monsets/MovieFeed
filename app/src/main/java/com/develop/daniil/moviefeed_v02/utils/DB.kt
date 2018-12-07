@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.ContactsContract
+import android.util.Log
 
 import java.util.ArrayList
 
@@ -34,8 +35,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DATA
 
     fun readAll(){
         val db = this.writableDatabase
-        print(db.rawQuery("SELECT * FROM "+ TABLE_USER, null))
+        Log.e("Debug",(db.rawQuery("SELECT * FROM "+ TABLE_USER, null)).toString())
+    }
 
+    fun checkAuth(login:String){
+        val db = this.readableDatabase
+        val c:Cursor =  db.rawQuery("SELECT * FROM "+ TABLE_USER + " WHERE "+ COLUMN_LOGIN +" = "+login , null)
+
+        if(c.getCount() == 0){
+            //TODO: Сделать обработку неавторизации
+        }
     }
 
 
@@ -83,35 +92,35 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DATA
 
         val CREATE_NEWS_TABLE = ("CREATE TABLE " +
                 TABLE_NEWS + "("
-                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_NEWSID + "INTEGER,"
-                + COLUMN_TITLE + "TEXT,"
-                + COLUMN_TEXT + "TEXT,"
-                + COLUMN_PICTURE + "TEXT,"
-                + COLUMN_SOURCE + "TEXT,"
-                + COLUMN_REF + "TEXT,"
-                + COLUMN_DATE + "DATE"+ ")")
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_NEWSID + " INTEGER,"
+                + COLUMN_TITLE + " TEXT,"
+                + COLUMN_TEXT + " TEXT,"
+                + COLUMN_PICTURE + " TEXT,"
+                + COLUMN_SOURCE + " TEXT,"
+                + COLUMN_REF + " TEXT,"
+                + COLUMN_DATE + " DATE"+ ")")
 
         val CREATE_REVIEWS_TABLE = ("CREATE TABLE " +
                 TABLE_REVIEWS + "("
-                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_TITLE + "TEXT,"
-                + COLUMN_TEXT + "TEXT,"
-                + COLUMN_PICTURE + "TEXT,"
-                + COLUMN_SOURCE + "TEXT,"
-                + COLUMN_REF + "TEXT,"
-                + COLUMN_DATE + "DATE,"
-                + COLUMN_AUTHOR + "TEXT,"
-                + COLUMN_STATUS + "INTEGER"
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_TITLE + " TEXT,"
+                + COLUMN_TEXT + " TEXT,"
+                + COLUMN_PICTURE + " TEXT,"
+                + COLUMN_SOURCE + " TEXT,"
+                + COLUMN_REF + " TEXT,"
+                + COLUMN_DATE + " DATE,"
+                + COLUMN_AUTHOR + " TEXT,"
+                + COLUMN_STATUS + " INTEGER"
                 + ")")
 
         val CREATE_USER_TABLE = ("CREATE TABLE " +
                 TABLE_USER + "("
-                + COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_LOGIN + "TEXT,"
-                + COLUMN_PASS + "TEXT,"
-                + COLUMN_EMAIL + "TEXT,"
-                + COLUMN_ROOT + "INTEGER"
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_LOGIN + " TEXT,"
+                + COLUMN_PASS + " TEXT,"
+                + COLUMN_EMAIL + " TEXT,"
+                + COLUMN_ROOT + " INTEGER"
                 + ")")
 
         private val SQL_DELETE_NEWS = "DROP TABLE IF EXISTS " + TABLE_NEWS

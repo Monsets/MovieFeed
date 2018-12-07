@@ -3,8 +3,10 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.R.id.login_button_LoginActivity
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
@@ -12,6 +14,9 @@ import com.develop.daniil.moviefeed_v02.utils.Crypto
 import com.develop.daniil.moviefeed_v02.utils.DBHelper
 import com.develop.daniil.moviefeed_v02.utils.funk
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.security.AccessController.getContext
 import javax.crypto.SecretKey
 
 class LoginActivity : AppCompatActivity() {
@@ -39,35 +44,30 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val encPass: String = Crypto.getHash(pass.text.toString()) //Получаем хеш пароля
+            val encPass: String = Crypto.encryptString(pass.text.toString(), Crypto.stringToKey(funk.getKluch()))//Шифруем логин//Получаем хеш пароля
             val encLogin: String =
                 Crypto.encryptString(login.text.toString(), Crypto.stringToKey(funk.getKluch()))//Шифруем логин
+            intent = Intent(this, MainActivity::class.java)
+            DBHelper.addRecToUserTable("petuch","123456","email@email.com",1)
 
-            //DBHelper.addRecToUserTable("petuch","123456","email@email.com",1)
+            DBHelper.readAll()
+            doAsync {
+                val test = server.authorize(encLogin, encPass)
+                try {
+                    uiThread {
+                        if (test!!.toInt() == 0) {
+                            startActivity(intent)
 
-            // DBHelper.readAll()
+                        } else {
 
-            /*this@LoginActivity.runOnUiThread {
-                if (server.authorize(encLogin, encPass) == "true") {
-                    intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    //TODO: Реализовать обработку ошибок
-
-                    print("huy")
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("Debug:", e.toString())
                 }
-            }*/
-
-            Thread(Runnable {
-                Thread.sleep(1000)
-                println("test")
-            })
-
-            //TODO: Изменить агрументы запроса(если требуется, я хз прост)
-
-
-
+            }
         }
+            //TODO: Изменить агрументы запроса(если требуется, я хз прост)
 
 
     }
