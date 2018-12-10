@@ -1,10 +1,12 @@
 package com.develop.daniil.moviefeed_v02.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +15,8 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.activities.LoginActivity
-
-
+import com.develop.daniil.moviefeed_v02.activities.MainActivity
+import com.develop.daniil.moviefeed_v02.utils.DBHelper
 
 
 class FragmentProfile: Fragment() {
@@ -33,7 +35,7 @@ class FragmentProfile: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-
+        var DBHelper: DBHelper = DBHelper(getActivity()!!.getApplicationContext())
         exit_button = view.findViewById<ImageButton>(R.id.exit_button) //buttons
         changeUsername_button = view.findViewById<ImageButton>(R.id.changeUsername_button)
         changeEmail_button = view.findViewById<ImageButton>(R.id.changeEmail_button)
@@ -46,6 +48,7 @@ class FragmentProfile: Fragment() {
 
         workWithEditTexts(R.id.newUsername_editText, view) //вынес в отдельную функцию работу с эдитами (для удобства)
         workWithEditTexts(R.id.newEmail_editText, view)
+
 
         changeUsername_button!!.setOnClickListener {
             if(username_isClicked == 0) { //т.е. текст уже введён в эдит, но клика по кнопке ещё не было
@@ -70,6 +73,12 @@ class FragmentProfile: Fragment() {
             toast.show()
         }
         exit_button!!.setOnClickListener {//через конпку выхода переходим на  ЛОГИН (можно удалить)
+            try {
+                DBHelper.clearTable("tblUser")
+                DBHelper.readAll()
+            }catch (e: Exception){
+                Log.e("Debug:", e.toString())
+            }
             val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)
         }

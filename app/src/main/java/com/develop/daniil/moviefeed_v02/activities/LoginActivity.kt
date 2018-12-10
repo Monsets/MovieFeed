@@ -38,6 +38,12 @@ class LoginActivity : AppCompatActivity() {
 
        val signup_button: Button = findViewById(R.id.SignUp_Button_LoginActivity)
 
+
+        if(DBHelper.getUserInfo() == 0){
+            intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
+
         signup_button.setOnClickListener {
             //переход на регистрацию
             intent = Intent(this, SignupActivity::class.java)
@@ -69,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
                 try {
                     uiThread {
                         if (auth.toString().trim().toInt() == 0) {
+                            DBHelper.addRecToUserTable(encLogin,encPass,"none",0)
                             intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                         } else {

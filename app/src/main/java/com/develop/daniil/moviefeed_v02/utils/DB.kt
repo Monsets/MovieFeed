@@ -37,19 +37,37 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DATA
         val db = this.writableDatabase
         val cur = db.rawQuery("SELECT * FROM "+ TABLE_USER, null)
 
+        cur.moveToFirst()
+
+        val t = cur.getCount()
+
+        for (i: Int in 0..t) {
+            Log.e("Debug", cur.getString(cur.getColumnIndex(COLUMN_LOGIN)))
+        }
             // Log.e("Debug",cur.get)
     }
 
-    fun getUserInfo(login:String):String{
+    fun getUserInfo():Int{
         val db = this.readableDatabase
-        val c:Cursor =  db.rawQuery("SELECT * FROM "+ TABLE_USER + " WHERE "+ COLUMN_LOGIN +" = "+login , null)
+        val c:Cursor =  db.rawQuery("SELECT * FROM "+ TABLE_USER, null)
 
         if(c.getCount() == 0){
-            return "null"
+            return 1
         }
-        return "DOPISHAT"
 
-        //TODO: ДОПИСАТЬ ФУНКЦИЮ!!!!!
+        c.moveToFirst();
+
+        val name = c
+            .getString(c
+                .getColumnIndex(COLUMN_LOGIN));
+
+        return 0
+    }
+
+    fun clearTable(tableName:String){
+        val db = this.writableDatabase
+        db.execSQL("DELETE FROM "+ tableName)
+        db.execSQL("vacuum")
     }
 
 
