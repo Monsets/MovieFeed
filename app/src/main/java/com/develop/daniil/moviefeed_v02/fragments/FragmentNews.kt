@@ -1,5 +1,6 @@
 package com.develop.daniil.moviefeed_v02.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -18,8 +19,13 @@ import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.ListAdapter
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import com.develop.daniil.moviefeed_v02.R.id.view
+import com.develop.daniil.moviefeed_v02.activities.LoginActivity
+import com.develop.daniil.moviefeed_v02.activities.MainActivity
+import com.develop.daniil.moviefeed_v02.activities.WebView
 
-class FragmentNews: Fragment() {
+
+class FragmentNews : Fragment() {
 
     private val linearLayoutManager = LinearLayoutManager(activity)
     val itemList = ArrayList<Item>()
@@ -39,74 +45,83 @@ class FragmentNews: Fragment() {
         return view
     }
 
+
     private fun newsData() {
         // initial list items
         for (i in 0..20) {
-            itemList.add(Item("Title", R.drawable.image, "Link","Time"))
+            itemList.add(Item("Title", R.drawable.image, "Link", "Time"))
         }
     }
 
-        private fun setUpRecyclerView(recyclerview: RecyclerView, UpSwipe: SwipeRefreshLayout){
-            val itemArrayAdapter = ListAdapter(itemList)
-            recyclerview.setLayoutManager(linearLayoutManager)
-            recyclerview.setItemAnimator(DefaultItemAnimator())
-            recyclerview.setAdapter(itemArrayAdapter)
+    private fun setUpRecyclerView(recyclerview: RecyclerView, UpSwipe: SwipeRefreshLayout) {
+        val itemArrayAdapter = ListAdapter(itemList)
+        recyclerview.setLayoutManager(linearLayoutManager)
+        recyclerview.setItemAnimator(DefaultItemAnimator())
+        recyclerview.setAdapter(itemArrayAdapter)
 
-            recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    // only load more items if it's currently not loading
-                    if (!itemArrayAdapter.isLoading()) {
-                        // only load more items if the last visible item on the screen is the last item
-                        if (linearLayoutManager.findLastCompletelyVisibleItemPosition() >= linearLayoutManager.itemCount - 1 ) {
 
-                            // add progress bar, the loading footer
-                            recyclerview.post {
-                                itemArrayAdapter.addFooter()
-                            }
+        recyclerview.setOnClickListener {
+            val intent = Intent(activity, WebView::class.java)
+            startActivity(intent)
 
-                            // load more items after 2 seconds, and remove the loading footer
-                            val handler = Handler()
-                            handler.postDelayed({
-                                itemArrayAdapter.removeFooter()
-                                val newItems = ArrayList<Item>()
-                                for (i in itemList.size..itemList.size + 19) {
-                                    newItems.add(Item("Title", R.drawable.image, "Link","Time"))
-                                }
-                                itemArrayAdapter.addItems(newItems)
-                            }, 1000)
+            Log.e("Debug1:", "1234")
+        }
+
+        recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                // only load more items if it's currently not loading
+                if (!itemArrayAdapter.isLoading()) {
+                    // only load more items if the last visible item on the screen is the last item
+                    if (linearLayoutManager.findLastCompletelyVisibleItemPosition() >= linearLayoutManager.itemCount - 1) {
+
+                        // add progress bar, the loading footer
+                        recyclerview.post {
+                            itemArrayAdapter.addFooter()
                         }
+
+                        // load more items after 2 seconds, and remove the loading footer
+                        val handler = Handler()
+                        handler.postDelayed({
+                            itemArrayAdapter.removeFooter()
+                            val newItems = ArrayList<Item>()
+                            for (i in itemList.size..itemList.size + 19) {
+                                newItems.add(Item("Title", R.drawable.image, "Link", "Time"))
+                            }
+                            itemArrayAdapter.addItems(newItems)
+                        }, 1000)
                     }
                 }
-            })
+            }
+        })
 
-            UpSwipe.setOnRefreshListener {
-                val handler = Handler()
+        UpSwipe.setOnRefreshListener {
+            val handler = Handler()
 
-                handler.postDelayed({
-                    val server = Server(view!!.context)
-                    doAsync {
-                        //Get last news from server
-                        var newsArray: Array<News>? = null
-                        try {
-                            newsArray = server.updateNews(2)
-                        } catch (e: Exception) {
-                            Log.e("Debug", e.toString())
-                        }
-
-                        rebuildNewsList(newsArray!!)
-                        uiThread {
-                            itemArrayAdapter.notifyDataSetChanged()
-                        }
+            handler.postDelayed({
+                val server = Server(view!!.context)
+                doAsync {
+                    //Get last news from server
+                    var newsArray: Array<News>? = null
+                    try {
+                        newsArray = server.updateNews(2)
+                    } catch (e: Exception) {
+                        Log.e("Debug", e.toString())
                     }
 
-                    UpSwipe.isRefreshing = false
-                }, 2000)
-            }
+                    rebuildNewsList(newsArray!!)
+                    uiThread {
+                        itemArrayAdapter.notifyDataSetChanged()
+                    }
+                }
+
+                UpSwipe.isRefreshing = false
+            }, 2000)
+        }
     }
 
 
-    private fun rebuildNewsList(newsArray: Array<News>){
+    private fun rebuildNewsList(newsArray: Array<News>) {
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
             itemList.add(0, Item(news.text, R.drawable.image, news.ref, news.date))
@@ -128,7 +143,7 @@ class FragmentNews: Fragment() {
 //        }
 
 
-            //Show new news list
+    //Show new news list
 //            uiThread {
 //                setUpRecyclerView(view1!!)
 //            }
@@ -138,3 +153,4 @@ class FragmentNews: Fragment() {
 
 
 }
+

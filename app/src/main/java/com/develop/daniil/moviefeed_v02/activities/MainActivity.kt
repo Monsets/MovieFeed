@@ -1,10 +1,14 @@
 package com.develop.daniil.moviefeed_v02.activities
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.View
+import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -51,8 +55,10 @@ class MainActivity : AppCompatActivity() {
         settingsButton = findViewById(R.id.Button_Settings)
         textView =  findViewById(R.id.text_toolbar) //загаловок тулбара
 
+
         showFragment(fragmentNews!!,1,"NEWS") //default fragment
         newsButton!!.setImageResource(R.drawable.ic_news_black) //default button
+
 
         newsButton!!.setOnClickListener {
             try {
@@ -65,7 +71,6 @@ class MainActivity : AppCompatActivity() {
                 Log.e("Debug:", e.toString())
             }
         }
-
 
         reviewsButton!!.setOnClickListener {
             showFragment(fragmentReviews!!,2,"REVIEWS")
@@ -94,6 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     fun bottomNavigationHelper(button: ImageButton, ic: Int){
         newsButton!!.setImageResource(R.drawable.ic_news_grey) //"красим" все кнопки в серый
         reviewsButton!!.setImageResource(R.drawable.ic_reviews_grey)
@@ -103,6 +109,7 @@ class MainActivity : AppCompatActivity() {
 
         button.setImageResource(ic)  //"красим" нужную кнопку в черный
     }
+
 
     fun showFragment(currentFragment: Fragment, num: Int, title: String) {
         val ft = supportFragmentManager.beginTransaction()
