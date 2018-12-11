@@ -17,25 +17,8 @@ class WebView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
 
-        loadWebpage()
+        webView.loadUrl("https://www.tutorialkart.com/kotlin-android/android-webview-example/")
+
     }
 
-    @Throws(UnsupportedOperationException::class)
-    fun buildUri(authority: String): Uri {
-        val builder = Uri.Builder()
-        builder.scheme("https")
-            .authority(authority)
-        return builder.build()
-    }
-
-    fun loadWebpage() {
-        webview.loadUrl("")
-        val uri: Uri
-        try {
-            uri = buildUri("https://habr.com/company/mailru/blog/262167/")
-            webview.loadUrl(uri.toString())
-        } catch(e: UnsupportedOperationException) {
-            e.printStackTrace()
-        }
-    }
 }

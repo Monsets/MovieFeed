@@ -1,5 +1,8 @@
 package com.develop.daniil.moviefeed_v02.utils
 
+import android.content.Context
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +11,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.develop.daniil.moviefeed_v02.R
+import com.develop.daniil.moviefeed_v02.activities.MainActivity
+import com.develop.daniil.moviefeed_v02.activities.WebView
 import kotlinx.android.synthetic.main.progress_bar.view.*
+import android.support.v4.content.ContextCompat.startActivity
 
-class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
+class ListAdapter(private val context: Context,private var itemList: ArrayList<Item> = ArrayList()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val REGULAR_ITEM = 0
     val FOOTER_ITEM = 1
+
+
+    private val inflater: LayoutInflater
+            = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getItemCount(): Int {
         return itemList.size
@@ -103,6 +115,10 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
 
         override fun onClick(view: View) {
             Log.d("onclick", "onClick " + layoutPosition + " " + name.text) //открываем встроенный браузер
+
+                context.startActivity(Intent(context, WebView::class.java))
+
+
         }
     }
 

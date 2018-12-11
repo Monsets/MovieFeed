@@ -46,6 +46,7 @@ class FragmentNews : Fragment() {
     }
 
 
+
     private fun newsData() {
         // initial list items
         for (i in 0..20) {
@@ -54,18 +55,11 @@ class FragmentNews : Fragment() {
     }
 
     private fun setUpRecyclerView(recyclerview: RecyclerView, UpSwipe: SwipeRefreshLayout) {
-        val itemArrayAdapter = ListAdapter(itemList)
+        val itemArrayAdapter = ListAdapter(getActivity()!!.getApplicationContext(), itemList)
         recyclerview.setLayoutManager(linearLayoutManager)
         recyclerview.setItemAnimator(DefaultItemAnimator())
         recyclerview.setAdapter(itemArrayAdapter)
 
-
-        recyclerview.setOnClickListener {
-            val intent = Intent(activity, WebView::class.java)
-            startActivity(intent)
-
-            Log.e("Debug1:", "1234")
-        }
 
         recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
