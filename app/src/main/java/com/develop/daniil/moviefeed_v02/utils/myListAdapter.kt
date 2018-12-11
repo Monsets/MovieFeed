@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.develop.daniil.moviefeed_v02.R
 import kotlinx.android.synthetic.main.progress_bar.view.*
 
+
 class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val REGULAR_ITEM = 0
@@ -20,7 +21,7 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = itemList[position]
+        val item = itemList.get(position)
         if (item.type == REGULAR_ITEM) {
             return REGULAR_ITEM
         } else if (item.type == FOOTER_ITEM) {
@@ -62,18 +63,14 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
 
     // this is required to be called right before loading more items
     fun addFooter() {
-        if (!isLoading()) {
             itemList.add(Item("Footer",0,"","", 1))
             notifyItemInserted(itemList.size - 1)
-        }
     }
 
     // this is required to be called right after finish loading the items
     fun removeFooter() {
-        if (isLoading()) {
             itemList.removeAt(itemList.size - 1)
             notifyItemRemoved(itemList.size - 1)
-        }
     }
 
     // it is loading if the last item is footer
@@ -82,31 +79,37 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
     }
 
     fun addItems(items : ArrayList<Item>) {
-        val lastPos = itemList.size - 1
-        itemList.addAll(items)
-        notifyItemRangeInserted(lastPos, items.size)
+            val lastPos = itemList.size - 1
+            itemList.addAll(items)
+            notifyItemRangeInserted(lastPos, items.size)
     }
 
-    inner class RegularViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    fun removeItems() {
+            val size = itemList.size
+            itemList.clear()
+            notifyItemRangeRemoved(0, size)
+    }
+
+    inner class RegularViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var name: TextView
         var image: ImageView
         var link: TextView
         var time: TextView
 
         init {
-            itemView.setOnClickListener(this)
-            name = itemView.findViewById<View>(R.id.newsName_textView) as TextView
+            itemView?.setOnClickListener(this)
+            name = itemView?.findViewById<View>(R.id.newsName_textView) as TextView
             image = itemView.findViewById<View>(R.id.newsPicture_imageView) as ImageView
             link = itemView.findViewById<View>(R.id.link_textView) as TextView
             time = itemView.findViewById<View>(R.id.newsTime_textView) as TextView
         }
 
-        override fun onClick(view: View) {
+        override fun onClick(view: View?) {
             Log.d("onclick", "onClick " + layoutPosition + " " + name.text) //открываем встроенный браузер
         }
     }
 
-    inner class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var progressBar = itemView.progressbar
+    inner class FooterViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        var progressBar = itemView?.progressbar
     }
 }

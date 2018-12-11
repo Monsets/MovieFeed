@@ -30,8 +30,8 @@
     <EditText
             android:layout_width="225dp"
             android:layout_height="wrap_content"
-            android:inputType="textLongMessage"
             android:ems="10"
+            android:inputType="textPassword"
             android:id="@+id/password_editText_LoginActivity"
             android:hint="Password"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
