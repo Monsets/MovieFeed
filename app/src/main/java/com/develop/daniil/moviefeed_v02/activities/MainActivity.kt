@@ -1,5 +1,6 @@
 package com.develop.daniil.moviefeed_v02.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.fragments.*
+import com.develop.daniil.moviefeed_v02.utils.DBHelper
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        var DBHelper: DBHelper = DBHelper(this)
 
         fragmentNews = FragmentNews()  //создание фрагментов-объектов
         fragmentReviews = FragmentReviews()
@@ -73,6 +77,13 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationHelper(searchButton!!, R.drawable.ic_search_black)
         }
         profileButton!!.setOnClickListener {
+
+            if(DBHelper.getUserInfo() == 1){
+                val intent1 = Intent(this,LoginActivity::class.java)
+                startActivity(intent1)
+                finish();
+            }
+
             showFragment(fragmentProfile!!,4,"PROFILE")
             bottomNavigationHelper(profileButton!!, R.drawable.ic_profile_black)
         }

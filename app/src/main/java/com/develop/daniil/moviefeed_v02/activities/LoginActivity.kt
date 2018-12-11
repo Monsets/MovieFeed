@@ -39,15 +39,16 @@ class LoginActivity : AppCompatActivity() {
        val signup_button: Button = findViewById(R.id.SignUp_Button_LoginActivity)
 
 
-        if(DBHelper.getUserInfo() == 0){
+        /*if(DBHelper.getUserInfo() == 0){
             intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
-        }
+        }*/
 
         signup_button.setOnClickListener {
             //переход на регистрацию
             intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
+            finish();
         }
 
         loginButton.setOnClickListener {
@@ -78,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                             DBHelper.addRecToUserTable(encLogin,encPass,"none",0)
                             intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
+                            finish();
                         } else {
                             val toast = Toast.makeText(applicationContext, "User is unregistered!", Toast.LENGTH_SHORT)
                             toast.show()
