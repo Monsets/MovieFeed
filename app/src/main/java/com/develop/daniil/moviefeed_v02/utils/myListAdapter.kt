@@ -47,7 +47,7 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
             REGULAR_ITEM -> {
                 holder as RegularViewHolder
                 holder.name.text = itemList[position].name
-                holder.image.setImageResource(itemList[position].image)
+                holder.image.setImageBitmap(itemList[position].image)
                 holder.link.text = itemList[position].link
                 holder.time.text = itemList[position].time
             }

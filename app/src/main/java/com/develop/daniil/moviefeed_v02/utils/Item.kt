@@ -1,3 +1,5 @@
 package com.develop.daniil.moviefeed_v02.utils
 
-class Item(var name: String = "", var image: Int = 0, var link: String = "", var time: String = "", var type: Int = 0)
+import android.graphics.Bitmap
+
+class Item(var name: String = "", var image: Bitmap, var link: String = "", var time: String = "", var type: Int = 0)

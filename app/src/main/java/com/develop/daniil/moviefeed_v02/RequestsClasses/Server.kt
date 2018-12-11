@@ -3,7 +3,9 @@ package com.develop.daniil.moviefeed_v02.RequestsClasses
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
+import com.develop.daniil.moviefeed_v02.R
 import com.squareup.moshi.Moshi
+import com.squareup.picasso.Picasso
 import khttp.get
 
 class Server(val context: Context) {
@@ -29,6 +31,10 @@ class Server(val context: Context) {
         val res = get(url).text
 
         val newsArray = jsonAdapter.fromJson(res)
+
+        for (news in newsArray!!) {
+            news.pictureImg = Picasso.with(context).load(news.picture).get()
+        }
 
         return newsArray
     }

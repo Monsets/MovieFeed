@@ -1,5 +1,6 @@
 package com.develop.daniil.moviefeed_v02.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -42,7 +43,7 @@ class FragmentNews: Fragment() {
     private fun newsData() {
         // initial list items
         for (i in 0..20) {
-            itemList.add(Item("Title", R.drawable.image, "Link","Time"))
+            itemList.add(Item("Title", Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888), "Link","Time"))
         }
     }
 
@@ -71,7 +72,7 @@ class FragmentNews: Fragment() {
                                 itemArrayAdapter.removeFooter()
                                 val newItems = ArrayList<Item>()
                                 for (i in itemList.size..itemList.size + 19) {
-                                    newItems.add(Item("Title", R.drawable.image, "Link","Time"))
+                                    newItems.add(Item("Title", Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888), "Link","Time"))
                                 }
                                 itemArrayAdapter.addItems(newItems)
                             }, 1000)
@@ -109,7 +110,7 @@ class FragmentNews: Fragment() {
     private fun rebuildNewsList(newsArray: Array<News>){
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
-            itemList.add(0, Item(news.text, R.drawable.image, news.source_id.toString(), news.date))
+            itemList.add(0, Item(news.text, news.pictureImg, news.source_id.toString(), news.date))
             itemList.remove(itemList.last())
         }
     }
