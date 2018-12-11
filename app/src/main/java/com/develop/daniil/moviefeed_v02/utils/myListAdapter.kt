@@ -1,5 +1,6 @@
 package com.develop.daniil.moviefeed_v02.utils
 
+import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -63,7 +64,7 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
     // this is required to be called right before loading more items
     fun addFooter() {
         if (!isLoading()) {
-            itemList.add(Item("Footer",0,"","", 1))
+            itemList.add(Item("Footer", Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),"","", 1))
             notifyItemInserted(itemList.size - 1)
         }
     }
