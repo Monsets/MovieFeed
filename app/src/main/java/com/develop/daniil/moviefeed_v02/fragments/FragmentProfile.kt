@@ -1,8 +1,10 @@
 package com.develop.daniil.moviefeed_v02.fragments
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +15,8 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.activities.LoginActivity
+
+
 
 
 
@@ -52,8 +56,8 @@ class FragmentProfile: Fragment() {
 
                 username_isClicked = 1
                 changeUsername_button!!.setImageResource(R.drawable.ic_check) //значок по дефолту
-                val toast = Toast.makeText(activity, "new username saved", Toast.LENGTH_SHORT) //просто тост
-                toast.show()
+                showAlert(R.id.changeUsername_button) //показываю тост, в нём методы ОнКлик
+
             }
         }
         changeEmail_button!!.setOnClickListener {//просто тост
@@ -61,8 +65,7 @@ class FragmentProfile: Fragment() {
 
                 email_isClicked = 1
                 changeEmail_button!!.setImageResource(R.drawable.ic_check) //значок по дефолту
-                val toast1 = Toast.makeText(activity, "new E-mail saved", Toast.LENGTH_SHORT)
-                toast1.show()
+                showAlert(R.id.changeEmail_button) //показываю тост, в нём методы ОнКлик
             }
         }
         changePassword_button!!.setOnClickListener {//просто тост
@@ -83,6 +86,38 @@ class FragmentProfile: Fragment() {
 //        SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 //        SupportActionBar.SetHomeButtonEnabled(true);
         return view
+    }
+
+    private fun showAlert(id: Int){
+        val mBuilder = AlertDialog.Builder(context!!)
+        mBuilder.setTitle("Do you want to save changes?")
+            .setPositiveButton("Yes") { dialogInterface: DialogInterface, i: Int ->
+                when(id){
+                    R.id.changeUsername_button ->{
+                        val toast = Toast.makeText(activity, "new username saved", Toast.LENGTH_SHORT) //просто тост
+                        newUsername_editText!!.text.clear()
+                        toast.show()
+                    }
+                    R.id.changeEmail_button ->{
+                        val toast1 = Toast.makeText(activity, "new E-mail saved", Toast.LENGTH_SHORT)
+                        newEmail_editText!!.text.clear()
+                        toast1.show()
+                    }
+                }
+            }
+            .setNegativeButton("No") { dialogInterface: DialogInterface, i: Int ->
+                when(id){
+                    R.id.changeUsername_button ->{
+                        newUsername_editText!!.text.clear()
+                    }
+                    R.id.changeEmail_button ->{
+                        newEmail_editText!!.text.clear()
+                    }
+                }
+                // User cancelled the dialog
+            }
+        // Create the AlertDialog object and return it
+        mBuilder.create().show()
     }
 
     private fun workWithEditTexts(id: Int, view: View){

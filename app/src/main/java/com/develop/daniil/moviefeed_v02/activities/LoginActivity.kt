@@ -6,13 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import com.develop.daniil.moviefeed_v02.R
-import com.develop.daniil.moviefeed_v02.R.id.login_button_LoginActivity
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.Crypto
 import com.develop.daniil.moviefeed_v02.utils.DBHelper
 import com.develop.daniil.moviefeed_v02.utils.funk
 import kotlinx.android.synthetic.main.activity_login.*
-import javax.crypto.SecretKey
 
 class LoginActivity : AppCompatActivity() {
     //lateinit var DBHelper : DBHelper
@@ -25,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
         val loginButton: Button = findViewById(R.id.login_button_LoginActivity)
         val login: EditText = findViewById(R.id.login_editText_LoginActivity)
         val pass: EditText = findViewById(R.id.password_editText_LoginActivity)
+        val skip: Button = findViewById(R.id.skipButton)
 
         val server = Server(this)
         var DBHelper: DBHelper = DBHelper(this)
@@ -35,6 +34,11 @@ class LoginActivity : AppCompatActivity() {
         signup_button.setOnClickListener {
             //переход на регистрацию
             intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
+        }
+
+        skipButton.setOnClickListener{
+            intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 

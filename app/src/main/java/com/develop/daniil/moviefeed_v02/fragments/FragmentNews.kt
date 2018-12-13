@@ -12,9 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.develop.daniil.moviefeed_v02.R
-import com.develop.daniil.moviefeed_v02.utils.Item
 import com.develop.daniil.moviefeed_v02.RequestsClasses.News
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
+import com.develop.daniil.moviefeed_v02.utils.Item
 import com.develop.daniil.moviefeed_v02.utils.ListAdapter
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -41,8 +41,8 @@ class FragmentNews: Fragment() {
 
     private fun newsData() {
         // initial list items
-        for (i in 0..20) {
-            itemList.add(Item("Title", R.drawable.image, "Link","Time"))
+        for (i in 0..14) {
+            itemList.add(Item("Title", R.drawable.image, "Source","Time", "myLink"))
         }
     }
 
@@ -70,8 +70,8 @@ class FragmentNews: Fragment() {
                             handler.postDelayed({
                                 itemArrayAdapter.removeFooter()
                                 val newItems = ArrayList<Item>()
-                                for (i in itemList.size..itemList.size + 19) {
-                                    newItems.add(Item("Title", R.drawable.image, "Link","Time"))
+                                for (i in itemList.size..itemList.size + 14) {
+                                    newItems.add(Item("Title", R.drawable.image, "Source","Time","myLink"))
                                 }
                                 itemArrayAdapter.addItems(newItems)
                             }, 1000)
@@ -109,7 +109,7 @@ class FragmentNews: Fragment() {
     private fun rebuildNewsList(newsArray: Array<News>){
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
-            itemList.add(0, Item(news.text, R.drawable.image, news.source_id.toString(), news.date))
+            itemList.add(0, Item(news.text, R.drawable.image, news.source_id.toString(), news.date, "myLink"))
             itemList.remove(itemList.last())
         }
     }

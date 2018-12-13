@@ -49,7 +49,7 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
                 holder as RegularViewHolder
                 holder.name.text = itemList[position].name
                 holder.image.setImageResource(itemList[position].image)
-                holder.link.text = itemList[position].link
+                holder.source.text = itemList[position].source
                 holder.time.text = itemList[position].time
             }
             FOOTER_ITEM -> {
@@ -63,7 +63,7 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
 
     // this is required to be called right before loading more items
     fun addFooter() {
-            itemList.add(Item("Footer",0,"","", 1))
+            itemList.add(Item("Footer",0,"","", "",1))
             notifyItemInserted(itemList.size - 1)
     }
 
@@ -93,14 +93,14 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
     inner class RegularViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var name: TextView
         var image: ImageView
-        var link: TextView
+        var source: TextView
         var time: TextView
 
         init {
             itemView?.setOnClickListener(this)
             name = itemView?.findViewById<View>(R.id.newsName_textView) as TextView
             image = itemView.findViewById<View>(R.id.newsPicture_imageView) as ImageView
-            link = itemView.findViewById<View>(R.id.link_textView) as TextView
+            source = itemView.findViewById<View>(R.id.source_textView) as TextView
             time = itemView.findViewById<View>(R.id.newsTime_textView) as TextView
         }
 
