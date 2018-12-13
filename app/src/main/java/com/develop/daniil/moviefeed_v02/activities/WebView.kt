@@ -17,8 +17,11 @@ class WebView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
 
-        webView.loadUrl("https://www.tutorialkart.com/kotlin-android/android-webview-example/")
+        val link = intent.getStringExtra("link")
+
+        webView.loadUrl(link.toString())
 
     }
+
 
 }

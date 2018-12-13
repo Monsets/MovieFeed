@@ -116,7 +116,10 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
         override fun onClick(view: View) {
             Log.d("onclick", "onClick " + layoutPosition + " " + name.text) //открываем встроенный браузер
 
-                context.startActivity(Intent(context, WebView::class.java))
+
+            var intent = Intent(context, WebView::class.java)
+            intent.putExtra("link", "https://www.google.com/webhp?hl=ru&sa=X&ved=0ahUKEwi6o7vj95nfAhXC8ywKHTlhAlwQPAgH")
+            context.startActivity(intent)
 
 
         }
