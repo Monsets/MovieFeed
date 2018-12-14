@@ -24,6 +24,8 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
     val FOOTER_ITEM = 1
 
 
+
+
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -60,8 +62,9 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
                 holder as RegularViewHolder
                 holder.name.text = itemList[position].name
                 holder.image.setImageResource(itemList[position].image)
-                holder.link.text = itemList[position].link
+                holder.source.text = itemList[position].source
                 holder.time.text = itemList[position].time
+                holder.link = itemList[position].link
             }
             FOOTER_ITEM -> {
                 // no data need to be assigned
@@ -75,7 +78,7 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
     // this is required to be called right before loading more items
     fun addFooter() {
         if (!isLoading()) {
-            itemList.add(Item("Footer",0,"","", 1))
+            itemList.add(Item("Footer",0,"","", "",1))
             notifyItemInserted(itemList.size - 1)
         }
     }
@@ -102,14 +105,15 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
     inner class RegularViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var name: TextView
         var image: ImageView
-        var link: TextView
+        var source: TextView
         var time: TextView
+        var link:String = ""
 
         init {
             itemView.setOnClickListener(this)
             name = itemView.findViewById<View>(R.id.newsName_textView) as TextView
             image = itemView.findViewById<View>(R.id.newsPicture_imageView) as ImageView
-            link = itemView.findViewById<View>(R.id.link_textView) as TextView
+            source = itemView.findViewById<View>(R.id.link_textView) as TextView
             time = itemView.findViewById<View>(R.id.newsTime_textView) as TextView
         }
 
@@ -118,7 +122,7 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
 
 
             var intent = Intent(context, WebView::class.java)
-            intent.putExtra("link", "https://www.google.com/webhp?hl=ru&sa=X&ved=0ahUKEwi6o7vj95nfAhXC8ywKHTlhAlwQPAgH")
+            intent.putExtra("link",link )
             context.startActivity(intent)
 
 

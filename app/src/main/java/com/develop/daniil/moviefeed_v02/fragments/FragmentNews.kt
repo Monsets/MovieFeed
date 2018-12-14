@@ -118,7 +118,7 @@ class FragmentNews : Fragment() {
     private fun rebuildNewsList(newsArray: Array<News>) {
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
-            itemList.add(0, Item(news.text, R.drawable.image, news.ref, news.date))
+            itemList.add(0, Item(news.title, R.drawable.image, news.link, news.date,news.source))
             itemList.remove(itemList.last())
         }
     }
