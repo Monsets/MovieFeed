@@ -43,7 +43,7 @@ class FragmentNews: Fragment() {
     private fun newsData() {
         // initial list items
         for (i in 0..20) {
-            itemList.add(Item("Title", Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888), "Link","Time"))
+            itemList.add(Item("Title", Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888), "Link","Time"))
         }
     }
 
@@ -72,7 +72,7 @@ class FragmentNews: Fragment() {
                                 itemArrayAdapter.removeFooter()
                                 val newItems = ArrayList<Item>()
                                 for (i in itemList.size..itemList.size + 19) {
-                                    newItems.add(Item("Title", Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888), "Link","Time"))
+                                    newItems.add(Item("Title", Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888), "Link","Time"))
                                 }
                                 itemArrayAdapter.addItems(newItems)
                             }, 1000)
@@ -92,7 +92,7 @@ class FragmentNews: Fragment() {
                         try {
                             newsArray = server.updateNews(2)
                         } catch (e: Exception) {
-                            Log.e("Debug", e.toString())
+                            Log.e("Debug123", e.toString())
                         }
 
                         rebuildNewsList(newsArray!!)

@@ -1,12 +1,21 @@
 package com.develop.daniil.moviefeed_v02.RequestsClasses
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import khttp.get
+import java.net.URL
+import android.R.attr.bitmap
+
+
 
 class Server(val context: Context) {
     private val serverUrl = "http://ec2-35-159-33-122.eu-central-1.compute.amazonaws.com"
@@ -17,6 +26,7 @@ class Server(val context: Context) {
 
     //JSON parser's builder
     private val moshi = Moshi.Builder().build()
+
 
 
     fun  updateNews(id: Int, quantity: Int = 15): Array<News>? {
@@ -32,8 +42,11 @@ class Server(val context: Context) {
 
         val newsArray = jsonAdapter.fromJson(res)
 
+
         for (news in newsArray!!) {
-            news.pictureImg = Picasso.with(context).load(news.picture).get()
+            val inputStream = URL(news.picture).openStream()   // Download Image from URL
+            news.pictureImg = BitmapFactory.decodeStream(inputStream)      // Decode Bitmap
+            inputStream.close()
         }
 
         return newsArray

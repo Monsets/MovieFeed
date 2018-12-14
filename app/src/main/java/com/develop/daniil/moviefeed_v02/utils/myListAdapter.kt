@@ -64,7 +64,7 @@ class ListAdapter(private var itemList: ArrayList<Item> = ArrayList()) : Recycle
     // this is required to be called right before loading more items
     fun addFooter() {
         if (!isLoading()) {
-            itemList.add(Item("Footer", Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),"","", 1))
+            itemList.add(Item("Footer", Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),"","", 1))
             notifyItemInserted(itemList.size - 1)
         }
     }
