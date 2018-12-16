@@ -3,8 +3,11 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.Crypto
@@ -19,10 +22,19 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val text_toolbar = findViewById<TextView>(R.id.text_toolbar)
+        text_toolbar.text = "Log in"
+        text_toolbar.textSize = 30F
+
+        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
         val loginButton: Button = findViewById(R.id.login_button_LoginActivity)
         val login: EditText = findViewById(R.id.login_editText_LoginActivity)
         val pass: EditText = findViewById(R.id.password_editText_LoginActivity)
-        val closeButton: Button = findViewById(R.id.closeButton)
 
         val server = Server(this)
         var DBHelper: DBHelper = DBHelper(this)
@@ -33,11 +45,6 @@ class LoginActivity : AppCompatActivity() {
         signup_button.setOnClickListener {
             //переход на регистрацию
             intent = Intent(this, SignupActivity::class.java)
-            startActivity(intent)
-        }
-
-        closeButton.setOnClickListener{
-            intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -73,5 +80,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean { //кнопка "назад"
+        onBackPressed()
+        return true
     }
 }

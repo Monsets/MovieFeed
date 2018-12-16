@@ -3,8 +3,11 @@ package com.develop.daniil.moviefeed_v02.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.RequestsClasses.Server
 import com.develop.daniil.moviefeed_v02.utils.Crypto
@@ -13,6 +16,16 @@ class SignupActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acivity_signup)
+
+        val text_toolbar = findViewById<TextView>(R.id.text_toolbar)
+        text_toolbar.text = "SIGN UP"
+        text_toolbar.textSize = 30F
+
+        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         val skipRegistration_button = findViewById<Button>(R.id.skipRegistration_button)
         skipRegistration_button.setOnClickListener {//переход в маин
@@ -71,4 +84,8 @@ class SignupActivity: AppCompatActivity() {
     }
 
 
+    override fun onSupportNavigateUp(): Boolean { //кнопка "назад"
+        onBackPressed()
+        return true
+    }
 }

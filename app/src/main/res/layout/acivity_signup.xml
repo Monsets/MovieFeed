@@ -6,17 +6,22 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent">
 
-    <TextView
-            android:text="SIGN UP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/Black"
-            android:id="@+id/TextView1" app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toTopOf="parent" android:textSize="48sp" android:textStyle="bold"
-            app:fontFamily="sans-serif" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/login_editText_SignupActivity"/>
+    <include layout="@layout/layout_toolbar"
+             android:id="@+id/lay"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="2dp"
+          android:background="@drawable/shadow"
+          app:layout_constraintBottom_toTopOf="@+id/lay"
+          app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+          android:id="@+id/view7" android:layout_marginTop="56dp" app:layout_constraintTop_toTopOf="parent"/>
+
+
     <EditText
             android:layout_width="225dp"
             android:layout_height="wrap_content"
@@ -26,9 +31,10 @@
             android:hint="Login"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/TextView1"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/email_editText_SignupActivity"/>
+            app:layout_constraintBottom_toTopOf="@+id/email_editText_SignupActivity"
+            app:layout_constraintTop_toBottomOf="@+id/view7"
+            android:layout_marginTop="50dp"/>
     <EditText
             android:layout_width="225dp"
             android:layout_height="wrap_content"
