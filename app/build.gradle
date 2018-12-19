@@ -46,4 +46,5 @@ dependencies {
 
     testImplementation "org.powermock:powermock-module-junit4:1.7.4"
     testImplementation "org.powermock:powermock-api-mockito2:1.7.4"
+    implementation 'junit:junit:4.12'
 }

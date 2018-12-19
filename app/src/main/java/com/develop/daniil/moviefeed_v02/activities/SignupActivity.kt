@@ -66,6 +66,9 @@ class SignupActivity: AppCompatActivity() {
                 //Send registration request
                 doAsync {
                     try {
+                        val test  = encLogin(loginInput.text.toString(),funk.getKluch())
+                        val em = encEmail(emailInput.text.toString(), funk.getKluch())
+                        val pass = encPass(passInput.text.toString(), funk.getKluch())
                         val regResp = server.register(encLogin(loginInput.text.toString(),funk.getKluch()),
                             encPass(passInput.text.toString(), funk.getKluch()), encEmail(emailInput.text.toString(), funk.getKluch()))
                         if (regResp.toString().trim().toInt() == 0) {
@@ -85,13 +88,6 @@ class SignupActivity: AppCompatActivity() {
                 }
             }
 
-
-        }
-       registerButton.setOnClickListener {
-
-            //Get key from DB
-
-            val url: String = "http://35.159.33.122/register"
 
         }
     }

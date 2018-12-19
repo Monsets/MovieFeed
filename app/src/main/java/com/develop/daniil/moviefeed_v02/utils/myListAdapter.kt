@@ -12,12 +12,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.activities.MainActivity
-import com.develop.daniil.moviefeed_v02.activities.WebView
 import kotlinx.android.synthetic.main.progress_bar.view.*
 import android.support.v4.content.ContextCompat.startActivity
-
-
-
+import android.webkit.WebSettings
+import android.webkit.WebView
+import com.develop.daniil.moviefeed_v02.activities.WebView as WV
 class ListAdapter(private val context: Context,private var itemList: ArrayList<Item> = ArrayList()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val REGULAR_ITEM = 0
@@ -61,7 +60,14 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
             REGULAR_ITEM -> {
                 holder as RegularViewHolder
                 holder.name.text = itemList[position].name
-                holder.image.setImageResource(itemList[position].image)
+                holder.image.getSettings().setLoadWithOverviewMode(true);
+                holder.image.getSettings().setUseWideViewPort(true);
+                holder.image.getSettings().setJavaScriptEnabled(true);
+                holder.image.setInitialScale(1);
+                holder.image.setScrollBarStyle(android.webkit.WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                holder.image.setScrollbarFadingEnabled(false);
+                holder.image.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                holder.image.loadUrl(itemList[position].image)
                 holder.source.text = itemList[position].source
                 holder.time.text = itemList[position].time
                 holder.link = itemList[position].link
@@ -78,7 +84,7 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
     // this is required to be called right before loading more items
     fun addFooter() {
         if (!isLoading()) {
-            itemList.add(Item("Footer",0,"","", "",1))
+            itemList.add(Item("Footer","","","", "",1))
             notifyItemInserted(itemList.size - 1)
         }
     }
@@ -104,15 +110,16 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
 
     inner class RegularViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var name: TextView
-        var image: ImageView
+        var image: WebView
         var source: TextView
         var time: TextView
         var link:String = ""
 
+
         init {
             itemView.setOnClickListener(this)
             name = itemView.findViewById<View>(R.id.newsName_textView) as TextView
-            image = itemView.findViewById<View>(R.id.newsPicture_imageView) as ImageView
+            image = itemView.findViewById<View>(R.id.webViewtest) as WebView
             source = itemView.findViewById<View>(R.id.link_textView) as TextView
             time = itemView.findViewById<View>(R.id.newsTime_textView) as TextView
         }
@@ -120,10 +127,14 @@ class ListAdapter(private val context: Context,private var itemList: ArrayList<I
         override fun onClick(view: View) {
             Log.d("onclick", "onClick " + layoutPosition + " " + name.text) //открываем встроенный браузер
 
+            try {
+                var intent = Intent(context,WV::class.java)
+                intent.putExtra("link",link )
+                context.startActivity(intent)
+            }catch (e: Exception) {
+                Log.e("Debug:", e.toString())
+            }
 
-            var intent = Intent(context, WebView::class.java)
-            intent.putExtra("link",link )
-            context.startActivity(intent)
 
 
         }

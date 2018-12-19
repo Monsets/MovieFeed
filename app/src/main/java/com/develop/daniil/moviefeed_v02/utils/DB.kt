@@ -141,6 +141,26 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DATA
         return 0
     }
 
+    fun getUserData():Array<String>{
+
+        val db = this.readableDatabase
+        val c:Cursor =  db.rawQuery("SELECT * FROM "+ TABLE_USER, null)
+
+        c.moveToFirst();
+
+        val name = c
+            .getString(c
+                .getColumnIndex(COLUMN_LOGIN));
+
+        val email =  c
+            .getString(c
+                .getColumnIndex(COLUMN_EMAIL));
+
+        val user:Array<String> = arrayOf(name,email)
+
+        return user
+    }
+
     fun clearTable(tableName:String){
         val db = this.writableDatabase
         db.execSQL("DELETE FROM "+ tableName)

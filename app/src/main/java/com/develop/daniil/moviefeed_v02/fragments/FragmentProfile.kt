@@ -12,11 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.activities.LoginActivity
 import com.develop.daniil.moviefeed_v02.activities.MainActivity
+import com.develop.daniil.moviefeed_v02.utils.Crypto
 import com.develop.daniil.moviefeed_v02.utils.DBHelper
+import com.develop.daniil.moviefeed_v02.utils.funk
 
 
 class FragmentProfile: Fragment() {
@@ -36,6 +39,8 @@ class FragmentProfile: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         var DBHelper: DBHelper = DBHelper(getActivity()!!.getApplicationContext())
+        var funk: funk = funk()
+
         exit_button = view.findViewById<ImageButton>(R.id.exit_button) //buttons
         changeUsername_button = view.findViewById<ImageButton>(R.id.changeUsername_button)
         changeEmail_button = view.findViewById<ImageButton>(R.id.changeEmail_button)
@@ -46,8 +51,20 @@ class FragmentProfile: Fragment() {
         currentPassword_editText = view.findViewById<EditText>(R.id.currentPassword_editText)
         newPassword_editText = view.findViewById<EditText>(R.id.newPassword_editText)
 
+        val curname = view.findViewById<TextView>(R.id.username_textView)
+        val curEmail = view.findViewById<TextView>(R.id.Email_textView)
+
         workWithEditTexts(R.id.newUsername_editText, view) //вынес в отдельную функцию работу с эдитами (для удобства)
         workWithEditTexts(R.id.newEmail_editText, view)
+
+        if(DBHelper.getUserInfo() != 1){
+            val info = DBHelper.getUserData()
+
+            curname.text = Crypto.decryptString(info[0],Crypto.stringToKey(funk.getKluch()))
+            curEmail.text = info[1]
+        }
+
+
 
 
         changeUsername_button!!.setOnClickListener {

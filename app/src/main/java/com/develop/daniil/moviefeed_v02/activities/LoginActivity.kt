@@ -66,6 +66,8 @@ class LoginActivity : AppCompatActivity() {
             val encLogin: String =
                 Crypto.encryptString(login.text.toString(), Crypto.stringToKey(funk.getKluch()))//Шифруем логин
 
+            val testenc =Crypto.testfun()
+
             //DBHelper.addRecToUserTable("petuch","123456","email@email.com",1)
 
             //DBHelper.readAll()

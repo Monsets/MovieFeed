@@ -21,6 +21,7 @@ class Server(var context: Context) {
     private var register = "register"
     private var authorization = "authorization"
     private var getSources = "getSources"
+    private var getMoreNews = "getMoreNews"
 
     //JSON parser's builder
     private var moshi = Moshi.Builder().build()
@@ -105,5 +106,42 @@ class Server(var context: Context) {
 
         var sourcesArray= jsonAdapter.fromJson(rez)
         return sourcesArray
+    }
+
+    fun getMoreNews(id: Int, quantity: Int = 15): Array<News>?{
+        //URL building
+        var url = Uri.parse(serverUrl)
+            .buildUpon().path(getMoreNews).appendQueryParameter("id", id.toString())
+            .appendQueryParameter("quantity", quantity.toString()).build().toString()
+
+        //Building JSON parser for array of news
+        var jsonAdapter = moshi.adapter<Array<News>>(Array<News>::class.java)
+        //Get request
+        var res = get(url).text
+
+        var newsArray = jsonAdapter.fromJson(res)
+
+        //Set sources
+        var sources = getSources()
+        var setsources = DBHelper.setSources(sources!!)
+        for (news in newsArray.orEmpty()) {
+            var id = news.source_id.trim()
+            news.source = DBHelper.getSource(news.source_id.trim().toInt())
+
+            //Formating date to local time
+            try {
+                val formatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
+                formatter.setTimeZone(TimeZone.getTimeZone("GMT"))
+                val date = formatter.parse(news.date)
+
+                val formatterToRussan = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+                val date2 = formatterToRussan.format(date)
+
+                news.date = date2.toString()
+            } catch (e: Exception) {
+                Log.e("Debug:", e.toString())
+            }
+        }
+        return newsArray
     }
 }

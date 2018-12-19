@@ -3,11 +3,17 @@ import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
-
 import android.util.Base64
+import android.util.Log
+
+import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+
 
 object Crypto {
-
     /*
     * encryptString encrypted string by AES algorithm
     * @message - input string for encrypt
@@ -72,4 +78,25 @@ object Crypto {
     }
 
 
+    fun testfun() {
+        val key = stringToKey("mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk=")
+        if(key == stringToKey("mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk="))
+            Log.e("EncTest(stringToKey):","True")
+
+        val ketsrt = keyToString(key)
+        if(ketsrt == "mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk=\n")
+            Log.e("EncTest(keyToString):","True")
+
+        val encstr = encryptString("testString", key)
+        if(encstr == "3C/AVpAq/2ImWQRF6r/BoA==\n")
+            Log.e("EncTest(encryptString):","True")
+
+        val decstr = decryptString("3C/AVpAq/2ImWQRF6r/BoA==\n",key)
+        if(decstr == "testString")
+            Log.e("EncTest(decryptString):","True")
+
+        val hash = getHash("testkey")
+        if(hash == "mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk=\n")
+            Log.e("EncTest(getHash):","True")
+    }
 }

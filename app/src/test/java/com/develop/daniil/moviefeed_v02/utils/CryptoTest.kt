@@ -6,10 +6,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import android.util.Base64
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.powermock.modules.junit4.PowerMockRunner
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import javax.crypto.spec.SecretKeySpec
+import com.develop.daniil.moviefeed_v02.utils.Crypto
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyInt
+import javax.crypto.Cipher
 
 
 @RunWith(PowerMockRunner::class)
@@ -24,9 +29,16 @@ class CryptoTest{
         PowerMockito.mockStatic(Base64::class.java)
 
         val stringKey= "mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk="
-        val enckey = java.util.Base64.getDecoder().decode(stringKey.toByteArray())
-        val kettostr = java.util.Base64.getEncoder().encodeToString(enckey)
-        Mockito.`when`(crypto.stringToKey(any())).thenReturn(SecretKeySpec(enckey, 0, enckey.size, "AES"))
+        PowerMockito.`when`(Base64.encode(any(), anyInt())).thenAnswer { invocation ->
+            java.util.Base64.getEncoder().encode(stringKey as ByteArray?) }
+
+        //PowerMockito.`when`(Base64.encodeToString(Cipher.getInstance("AES").doFinal(any().toByteArray(charset("UTF-8"))),Base64.DEFAULT)).thenAnswer { invocation ->
+           // android.util.Base64.encodeToString(Cipher.getInstance("AES").doFinal(stringKey.toByteArray(charset("UTF-8"))),Base64.DEFAULT) }
+
+
+       //val enckey = java.util.Base64.getDecoder().decode(stringKey.toByteArray())
+       // val kettostr = java.util.Base64.getEncoder().encodeToString(enckey)
+        //Mockito.`when`(crypto.stringToKey(any())).thenReturn(SecretKeySpec(enckey, 0, enckey.size, "AES"))
 
         val key = crypto.stringToKey("mEg8brQLbDGkSMIqZt7TteXo1RGcrIMntlXItcSDZIk=")
 

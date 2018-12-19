@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import com.develop.daniil.moviefeed_v02.R
 import com.develop.daniil.moviefeed_v02.utils.Item
 import com.develop.daniil.moviefeed_v02.RequestsClasses.News
@@ -36,7 +37,6 @@ class FragmentNews : Fragment() {
         val view = inflater.inflate(R.layout.fragment_news, container, false)
         val recyclerview = view.findViewById<RecyclerView>(R.id.main_recyclerView)
         val UpSwipe = view.findViewById<SwipeRefreshLayout>(R.id.UpSwipe)
-
         newsData()
         view1 = view
 
@@ -49,8 +49,8 @@ class FragmentNews : Fragment() {
 
     private fun newsData() {
         // initial list items
-        for (i in 0..20) {
-            itemList.add(Item("Title", R.drawable.image, "Link", "Time"))
+        for (i in 0..15) {
+            itemList.add(Item("Title", "", "Link", "Time"))
         }
     }
 
@@ -77,12 +77,9 @@ class FragmentNews : Fragment() {
                         // load more items after 2 seconds, and remove the loading footer
                         val handler = Handler()
                         handler.postDelayed({
-                            itemArrayAdapter.removeFooter()
-                            val newItems = ArrayList<Item>()
-                            for (i in itemList.size..itemList.size + 19) {
-                                newItems.add(Item("Title", R.drawable.image, "Link", "Time"))
-                            }
-                            itemArrayAdapter.addItems(newItems)
+                            getNews(itemArrayAdapter)
+
+                            UpSwipe.isRefreshing = false
                         }, 1000)
                     }
                 }
@@ -93,32 +90,35 @@ class FragmentNews : Fragment() {
             val handler = Handler()
 
             handler.postDelayed({
-                val server = Server(view!!.context)
-                doAsync {
-                    //Get last news from server
-                    var newsArray: Array<News>? = null
-                    try {
-                        newsArray = server.updateNews(2)
-                    } catch (e: Exception) {
-                        Log.e("Debug", e.toString())
-                    }
-
-                    rebuildNewsList(newsArray!!)
-                    uiThread {
-                        itemArrayAdapter.notifyDataSetChanged()
-                    }
-                }
+                getNews(itemArrayAdapter)
 
                 UpSwipe.isRefreshing = false
             }, 2000)
         }
     }
 
+    private fun getNews(itemArrayAdapter:ListAdapter){
+        val server = Server(view!!.context)
+        doAsync {
+            //Get last news from server
+            var newsArray: Array<News>? = null
+            try {
+                newsArray = server.getMoreNews(30)
+            } catch (e: Exception) {
+                Log.e("Debug", e.toString())
+            }
+
+            rebuildNewsList(newsArray!!)
+            uiThread {
+                itemArrayAdapter.notifyDataSetChanged()
+            }
+        }
+    }
 
     private fun rebuildNewsList(newsArray: Array<News>) {
         for (i in newsArray.size - 1 downTo 0 step 1) {
             val news = newsArray[i]
-            itemList.add(0, Item(news.title, R.drawable.image, news.link, news.date,news.source))
+            itemList.add(0, Item(news.title, news.picture, news.link, news.date,news.source))
             itemList.remove(itemList.last())
         }
     }
